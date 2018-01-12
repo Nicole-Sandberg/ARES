@@ -1,0 +1,24 @@
+
+stages:
+  - setup
+  - test
+  - package
+
+mvn_compile:
+  stage: setup
+  script:
+    mvn compile
+  artifacts:
+    paths:
+      - target/
+    expire_in: 1 hour
+
+mvn_test:
+  stage: test
+  script:
+    - mvn test
+
+mvn_package:
+  stage: package
+  script:
+    - mvn package

@@ -1,0 +1,13 @@
+/target
+/.settings
+/.apt_generated
+/bin
+/.classpath
+/.project
+/.factorypath
+hs_err*
+/.idea
+*.iml
+*.ipr
+*.iws
+*.eml

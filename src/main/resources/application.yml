@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: ARES
+  profiles:
+    active: prod
+
+server:
+  port: 9044
+  servletPath: /ARES/
+  maxHttpPostSize: 100485760 # 100MB
+  
+mail:
+  error:
+    to: daniel.collin@retriever.se
+
+retriever:
+  security:
+    enabled: true
+    md5login: true
+    emaillogin: false
+    iplogin: false
+
+elasticsearch:
+  port: 9350
+  url: es-biz.retriever.no
+  timeout: 30_000
+  cluster:
+    name: business
+logging:
+    debug: true
+
