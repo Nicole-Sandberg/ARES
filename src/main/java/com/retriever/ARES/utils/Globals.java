@@ -1,8 +1,7 @@
 package com.retriever.ARES.utils;
 
-public interface Globals {
+public class Globals {
+	private Globals() { }
 
-	String INDEX = "annreport.se.v1";
-
-
+	public static final String INDEX = "annreport.se.v1";
 }

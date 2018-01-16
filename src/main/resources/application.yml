@@ -7,7 +7,6 @@ spring:
 server:
   port: 9044
   servletPath: /ARES/
-  maxHttpPostSize: 100485760 # 100MB
   
 mail:
   error:
