@@ -20,7 +20,7 @@
 		<dependency>
 			<groupId>com.retriever</groupId>
 			<artifactId>spring-config</artifactId>
-			<version>1.2.2</version>
+			<version>1.2.1</version>
 		</dependency>
         <dependency>
             <groupId>org.elasticsearch</groupId>
