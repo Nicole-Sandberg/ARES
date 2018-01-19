@@ -21,16 +21,6 @@ public class Controller {
 	SearchService searchService;
 
 
-	@RequestMapping("account")
-	public Map<String, Object> getName(@CurrentAccount Account account) {
-		return singletonMap("name", account.getName());
-	}
-	
-	@RequestMapping("emailLogin")
-	public Map<String, Object> getName(@CurrentEmailLogin EmailLogin emailLogin) {
-		return singletonMap("email", emailLogin.getEmail());
-	}
-
 	@RequestMapping("search")
 	public void search(@CurrentAccount Account account) {
 		searchService.search(null);
