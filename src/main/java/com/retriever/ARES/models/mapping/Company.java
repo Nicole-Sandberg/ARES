@@ -7,39 +7,39 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Company {
-    private String companyName;
-    private String orgnr;
-    private List<Report> reports;
+	private String companyName;
+	private String orgnr;
+	private List<Report> reports;
 
-    public Company(@JsonProperty("companyName") String companyName,
-                   @JsonProperty("orgnr") String orgnr,
-                   @JsonProperty("report") List<Report> reports){
-        this.companyName = companyName;
-        this.orgnr = orgnr;
-        this.reports= reports;
-    }
+	public Company(@JsonProperty("companyName") String companyName,
+			@JsonProperty("orgnr") String orgnr,
+			@JsonProperty("report") List<Report> reports) {
+		this.companyName = companyName;
+		this.orgnr = orgnr;
+		this.reports = reports;
+	}
 
-    public String getCompanyName() {
-        return companyName;
-    }
+	public String getCompanyName() {
+		return companyName;
+	}
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 
-    public String getOrgnr() {
-        return orgnr;
-    }
+	public String getOrgnr() {
+		return orgnr;
+	}
 
-    public void setOrgnr(String orgnr) {
-        this.orgnr = orgnr;
-    }
+	public void setOrgnr(String orgnr) {
+		this.orgnr = orgnr;
+	}
 
-    public List<Report> getReports() {
-        return reports;
-    }
+	public List<Report> getReports() {
+		return reports;
+	}
 
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
+	public void setReports(List<Report> reports) {
+		this.reports = reports;
+	}
 }
