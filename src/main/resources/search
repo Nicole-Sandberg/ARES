@@ -1,0 +1,19 @@
+GET annreport.se.v1/retriever/_search
+{
+    "query": {
+        "nested": {
+            "path": "report",
+            "query": {
+                "nested" : {
+                    "path" :  "report.pages",
+                    "query" :  {
+                       "match": {
+                           "report.pages.story": "FÖRVALTNINGSBERÄTTELSE"
+                        }
+                    }
+                }
+            },
+            "inner_hits": {}
+        }
+    }
+}

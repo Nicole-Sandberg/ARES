@@ -5,6 +5,7 @@ import com.retriever.ARES.models.SearchQuery;
 import com.retriever.ARES.models.SearchResponseARES;
 import com.retriever.ARES.services.ElasticsearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +25,11 @@ public class Controller {
 
 
 	@RequestMapping("search")
-	public ResponseEntity <JsonNode> search(@CurrentAccount Account account, @RequestParam String queryString) {
+	public ResponseEntity <SearchResponseARES> search(@CurrentAccount Account account, @RequestParam String queryString) {
 		SearchQuery query = new SearchQuery(queryString);
 		SearchResponseARES response = getData(query);
-		// TODO: 2018-02-01 skapa query
-		// TODO: 2018-02-01 returnera respone
-		// TODO: 2018-02-01 convert to ResponseEnntity
-		return null;
-	//	return searchService.search(query);
+		ResponseEntity<SearchResponseARES> result = new ResponseEntity<SearchResponseARES>(response, HttpStatus.OK);
+		return result;
 	}
 
 	private SearchResponseARES getData(SearchQuery query) {

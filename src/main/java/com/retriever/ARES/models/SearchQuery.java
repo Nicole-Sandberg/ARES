@@ -3,12 +3,13 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.retriever.ARES.utils.QueryBuilderUtils;
+import org.assertj.core.util.Strings;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
 import java.util.Optional;
-import java.util.StringJoiner;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchQuery {
@@ -39,10 +40,24 @@ public class SearchQuery {
 
 
 
-    public QueryBuilder toQueryBuilder() {
+    public Optional<QueryBuilder> toQueryBuilder() {
+        if (Strings.isNullOrEmpty(queryString))
+            return Optional.empty();
+        String query = queryString;
         BoolQueryBuilder builder = QueryBuilders.boolQuery();
-// TODO: 2018-02-01 se till att strängen är skriven såsom kibana
-        return builder;
+        builder.must(QueryBuilderUtils.getNestedQuery(query));
+
+        return Optional.of(builder);
+    }
+
+    private Optional<QueryBuilder> query() {
+        if (Strings.isNullOrEmpty(queryString))
+            return Optional.empty();
+        String query = queryString;
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+        builder.must(QueryBuilderUtils.getNestedQuery(query));
+
+        return Optional.of(builder);
     }
 
 }

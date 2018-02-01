@@ -23,4 +23,44 @@ public class SearchResponseARES {
         responses.forEach(response ->
         results.addAll(ResponseUtils.parseHits(response)));
     }
+
+    public int getFromIndex() {
+        return fromIndex;
+    }
+
+    public void setFromIndex(int fromIndex) {
+        this.fromIndex = fromIndex;
+    }
+
+    public int getToIndex() {
+        return toIndex;
+    }
+
+    public void setToIndex(int toIndex) {
+        this.toIndex = toIndex;
+    }
+
+    public long getReturnedHits() {
+        return returnedHits;
+    }
+
+    public void setReturnedHits(long returnedHits) {
+        this.returnedHits = returnedHits;
+    }
+
+    public long getTotalHits() {
+        return totalHits;
+    }
+
+    public void setTotalHits(long totalHits) {
+        this.totalHits = totalHits;
+    }
+
+    public List<Company> getResults() {
+        return results;
+    }
+
+    public void setResults(List<Company> results) {
+        this.results = results;
+    }
 }
