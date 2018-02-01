@@ -1,6 +1,7 @@
 package com.retriever.ARES.services;
 
-import com.retriever.ARES.models.QueryObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.retriever.ARES.models.SearchQuery;
 import com.retriever.ARES.utils.QueryBuilderUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.slf4j.Logger;
@@ -10,13 +11,25 @@ import org.springframework.beans.factory.annotation.Value;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionRequestBuilder;
 import org.elasticsearch.action.ActionResponse;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Optional;
 
 @Service
-public class SearchService {
-	private static final Logger log = LoggerFactory.getLogger(SearchService.class);
+public class ElasticsearchService {
+	private static RestTemplate restTemplate;
+	static {
+		SimpleClientHttpRequestFactory requestFactory =
+				new SimpleClientHttpRequestFactory();
+		requestFactory.setReadTimeout(400 * 1000);
+		requestFactory.setConnectTimeout(400 * 1000);
+		requestFactory.setBufferRequestBody(false);
+		restTemplate = new RestTemplate(requestFactory);
+	}
+	private static final Logger log = LoggerFactory.getLogger(ElasticsearchService.class);
 
 	@Value("${logging.debug}")
 	private Boolean debug;
@@ -27,7 +40,8 @@ public class SearchService {
 	@Autowired
 	QueryBuilderUtils queryBuilder;
 
-	public Optional<SearchResponse> search(QueryObject query) {
+	public Optional<SearchResponse> search(SearchQuery query) {
+
 		return queryBuilder.getRequestBuilderByQuery(query).flatMap(this::actionGet);
 	}
 
@@ -47,4 +61,5 @@ public class SearchService {
 			return Optional.empty();
 		}
 	}
+
 }
