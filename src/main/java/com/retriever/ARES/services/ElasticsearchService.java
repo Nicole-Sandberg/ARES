@@ -1,6 +1,5 @@
 package com.retriever.ARES.services;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.retriever.ARES.models.SearchQuery;
 import com.retriever.ARES.utils.QueryBuilderUtils;
 import org.elasticsearch.action.search.SearchResponse;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionRequestBuilder;
 import org.elasticsearch.action.ActionResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

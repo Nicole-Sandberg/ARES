@@ -1,4 +1,5 @@
 package com.retriever.ARES.models;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,51 +14,41 @@ import java.util.Optional;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchQuery {
-    private Integer maxHits= 20;
-    private String queryString;
+	private Integer maxHits = 20;
+	private String queryString;
 
-    private JsonNode sort;
+	private JsonNode sort;
 
-    private static ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 
-    public SearchQuery(String query) {
-        this.queryString = query;
-    }
+	public SearchQuery(String query) {
+		this.queryString = query;
+	}
 
-    public void setSort(JsonNode sort) {
-        this.sort = sort;
-    }
-    public JsonNode getSort() {
-        return Optional.ofNullable(sort).orElse(mapper.createObjectNode().nullNode());
-    }
-    public Integer getMaxHits() {
-        return maxHits;
-    }
+	public void setSort(JsonNode sort) {
+		this.sort = sort;
+	}
 
-    public void setMaxHits(Integer maxHits) {
-        this.maxHits = maxHits;
-    }
+	public JsonNode getSort() {
+		return Optional.ofNullable(sort).orElse(mapper.createObjectNode().nullNode());
+	}
+
+	public Integer getMaxHits() {
+		return maxHits;
+	}
+
+	public void setMaxHits(Integer maxHits) {
+		this.maxHits = maxHits;
+	}
 
 
+	public Optional<QueryBuilder> toQueryBuilder() {
+		if (Strings.isNullOrEmpty(queryString))
+			return Optional.empty();
+		String query = queryString;
+		BoolQueryBuilder builder = QueryBuilders.boolQuery();
+		builder.must(QueryBuilderUtils.getNestedQuery(query));
 
-    public Optional<QueryBuilder> toQueryBuilder() {
-        if (Strings.isNullOrEmpty(queryString))
-            return Optional.empty();
-        String query = queryString;
-        BoolQueryBuilder builder = QueryBuilders.boolQuery();
-        builder.must(QueryBuilderUtils.getNestedQuery(query));
-
-        return Optional.of(builder);
-    }
-
-    private Optional<QueryBuilder> query() {
-        if (Strings.isNullOrEmpty(queryString))
-            return Optional.empty();
-        String query = queryString;
-        BoolQueryBuilder builder = QueryBuilders.boolQuery();
-        builder.must(QueryBuilderUtils.getNestedQuery(query));
-
-        return Optional.of(builder);
-    }
-
+		return Optional.of(builder);
+	}
 }
