@@ -1,54 +1,33 @@
 package com.retriever.ARES.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.retriever.ARES.utils.QueryBuilderUtils;
-import org.assertj.core.util.Strings;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-
-import java.util.Optional;
-
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class SearchQuery {
-	private Integer maxHits = 20;
-	private String queryString;
+		boolean includeStory = false;
+		String query;
+		int maxHits;
 
-	private JsonNode sort;
+		SearchQuery() { }
 
-	private static ObjectMapper mapper = new ObjectMapper();
+		public String getQuery() {
+				return query;
+		}
 
-	public SearchQuery(String query) {
-		this.queryString = query;
-	}
+		public void setQuery(String query) {
+				this.query = query;
+		}
 
-	public void setSort(JsonNode sort) {
-		this.sort = sort;
-	}
+		public int getMaxHits() {
+				return maxHits;
+		}
 
-	public JsonNode getSort() {
-		return Optional.ofNullable(sort).orElse(mapper.createObjectNode().nullNode());
-	}
+		public void setMaxHits(int maxHits) {
+				this.maxHits = maxHits;
+		}
 
-	public Integer getMaxHits() {
-		return maxHits;
-	}
+		public boolean isIncludeStory() {
+				return includeStory;
+		}
 
-	public void setMaxHits(Integer maxHits) {
-		this.maxHits = maxHits;
-	}
-
-
-	public Optional<QueryBuilder> toQueryBuilder() {
-		if (Strings.isNullOrEmpty(queryString))
-			return Optional.empty();
-		String query = queryString;
-		BoolQueryBuilder builder = QueryBuilders.boolQuery();
-		builder.must(QueryBuilderUtils.getNestedQuery(query));
-
-		return Optional.of(builder);
-	}
+		public void setIncludeStory(boolean includeStory) {
+				this.includeStory = includeStory;
+		}
 }
