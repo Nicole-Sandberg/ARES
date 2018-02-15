@@ -31,8 +31,5 @@ public final class ResponseUtils {
 					}
 				}).filter(Objects::nonNull)
 				.collect(Collectors.toList());
-
 	}
-
-
 }

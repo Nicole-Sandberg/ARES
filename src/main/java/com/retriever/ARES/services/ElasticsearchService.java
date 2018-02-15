@@ -10,23 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.elasticsearch.ElasticsearchException;
 import org.elasticsearch.action.ActionRequestBuilder;
 import org.elasticsearch.action.ActionResponse;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+
 
 import java.util.Optional;
 
 @Service
 public class ElasticsearchService {
-	private static RestTemplate restTemplate;
-	static {
-		SimpleClientHttpRequestFactory requestFactory =
-				new SimpleClientHttpRequestFactory();
-		requestFactory.setReadTimeout(400 * 1000);
-		requestFactory.setConnectTimeout(400 * 1000);
-		requestFactory.setBufferRequestBody(false);
-		restTemplate = new RestTemplate(requestFactory);
-	}
+
 	private static final Logger log = LoggerFactory.getLogger(ElasticsearchService.class);
 
 	@Value("${logging.debug}")
@@ -39,9 +30,11 @@ public class ElasticsearchService {
 	QueryBuilderUtils queryBuilder;
 
 	public Optional<SearchResponse> search(SearchQuery query) {
-
-		return queryBuilder.getRequestBuilderByQuery(query).flatMap(this::actionGet);
+		//	 query.getQueryObject().flatMap(this::actionGet);
+	return queryBuilder.getRequestBuilderByQuery(query).flatMap(this::actionGet);
 	}
+
+
 
 	private <U extends ActionResponse> Optional<U>
 		actionGet(ActionRequestBuilder<?, U, ?> builder) {
@@ -59,5 +52,4 @@ public class ElasticsearchService {
 			return Optional.empty();
 		}
 	}
-
 }

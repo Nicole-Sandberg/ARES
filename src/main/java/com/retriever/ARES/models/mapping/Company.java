@@ -11,7 +11,7 @@ public class Company {
 	private String orgnr;
 	private List<Report> reports;
 
-	public Company(@JsonProperty("companyName") String companyName,
+	public Company(@JsonProperty("companyname") String companyName,
 			@JsonProperty("orgnr") String orgnr,
 			@JsonProperty("report") List<Report> reports) {
 		this.companyName = companyName;

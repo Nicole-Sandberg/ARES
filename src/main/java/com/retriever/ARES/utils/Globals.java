@@ -14,17 +14,25 @@ public class Globals {
 	public static final String MATCH_FIELD = "report.pages.story";
 
 	private static final String[] FIELDS = new String[] {
-			"companyName",
+			"companyname",
+			"orgnr",
+			"report.year",
+			"report.from_month",
+			"report.length_in_month",
+			"report.pages.page"
+	};
+	private static final String[] FIELDSANDSTORY = new String[] {
+			"companyname",
 			"orgnr",
 			"report.year",
 			"report.from_month",
 			"report.length_in_month",
 			"report.pages.story",
 			"report.pages.page"
-
 	};
 
-	public static String[] getFIELDS() {
-		return Arrays.copyOf(FIELDS, FIELDS.length);
+	public static String[] getFIELDS(boolean includeStory) {
+		String[] fields  = includeStory ? FIELDSANDSTORY : FIELDS;
+		return Arrays.copyOf(fields, fields.length);
 	}
 }
