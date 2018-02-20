@@ -7,6 +7,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +40,16 @@ public class QueryBuilderUtils {
 			return Optional.of(getMustQuery(rawInput));
 		}
 		return parseQuery(rawInput);
+	}
+	private void parse(){
+		String string =  "håkan AND hellström";
+		QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery("q");
+		queryBuilder.defaultField("df");
+		queryBuilder.analyzer("analyser");
+		queryBuilder.analyzeWildcard(false);
+		if ("OR".equals(string)){
+			queryBuilder.defaultOperator(QueryStringQueryBuilder.DEFAULT_OPERATOR); //OR
+		}
 	}
 
 	private SearchRequestBuilder getBuilderWithMaxHits(int maxHits) {
