@@ -30,9 +30,18 @@ public class Globals {
 			"report.pages.story",
 			"report.pages.page"
 	};
-
+	private static final String[]keys = new String[] {
+			"AND",
+			"OR",
+			"ANDNOT",
+			"("
+	};
 	public static String[] getFIELDS(boolean includeStory) {
-		String[] fields  = includeStory ? FIELDSANDSTORY : FIELDS;
+		String[] fields	= includeStory ? FIELDSANDSTORY : FIELDS;
 		return Arrays.copyOf(fields, fields.length);
+	}
+
+	public static String[] getKeys() {
+		return Arrays.copyOf(keys, keys.length);
 	}
 }

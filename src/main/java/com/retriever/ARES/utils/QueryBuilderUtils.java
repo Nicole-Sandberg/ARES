@@ -34,6 +34,12 @@ public class QueryBuilderUtils {
 		getRootQuery(query.getQuery()).ifPresent(builder::setQuery);
 		return Optional.of(builder);
 	}
+	private Optional<QueryBuilder> parseQuery(String rawInput) {
+		if (rawInput.contains(Arrays.toString(Globals.getKeys()))) {
+			return Optional.of(getMustQuery(rawInput));
+		}
+		return parseQuery(rawInput);
+	}
 
 	private SearchRequestBuilder getBuilderWithMaxHits(int maxHits) {
 		return getBuilder(0, maxHits);
