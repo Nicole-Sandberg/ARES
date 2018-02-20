@@ -12,6 +12,7 @@ public class SearchResponseARES {
 	private int toIndex;
 	private long returnedHits;
 	private long totalHits;
+	private int x = 0x100;//4
 	private List<Company> results = new ArrayList<>();
 
 	public SearchResponseARES() {

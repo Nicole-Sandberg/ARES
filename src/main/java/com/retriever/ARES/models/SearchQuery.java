@@ -1,13 +1,24 @@
 package com.retriever.ARES.models;
 
+import java.text.SimpleDateFormat;
+
 public class SearchQuery {
 		boolean includeStory = false;
 		String query;
 		int maxHits;
+		SimpleDateFormat documentCreatedAfter;
 
 		SearchQuery() { }
 
-		public String getQuery() {
+	public SimpleDateFormat getDocumentCreatedAfter() {
+		return documentCreatedAfter;
+	}
+
+	public void setDocumentCreatedAfter(SimpleDateFormat documentCreatedAfter) {
+		this.documentCreatedAfter = documentCreatedAfter;
+	}
+
+	public String getQuery() {
 				return query;
 		}
 

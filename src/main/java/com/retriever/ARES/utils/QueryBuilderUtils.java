@@ -62,6 +62,14 @@ public class QueryBuilderUtils {
 			return Optional.of(shouldQuery);
 	}
 
+	private static QueryBuilder getMustNotQuery(String raw) {
+		BoolQueryBuilder mustNotQueries = QueryBuilders.boolQuery();
+		Arrays.stream(raw.split("ANDNOT")).forEach(phrase ->{
+			mustNotQueries.mustNot(getNestedQuery(phrase.trim()));
+		});
+		return mustNotQueries;
+	}
+
 	private static QueryBuilder getMustQuery(String section) {
 		BoolQueryBuilder mustQueries = QueryBuilders.boolQuery();
 		Arrays.stream(section.split("AND")).forEach(phrase -> {
