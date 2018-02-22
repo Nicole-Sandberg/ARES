@@ -1,9 +1,11 @@
 package com.retriever.ARES;
 
+import com.retriever.ARES.utils.QueryBuilderUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -31,6 +33,8 @@ public class ARESApplication {
 	private String clusterName;
 
 	public static void main(String[] args) {
+		String input = "håkan AND hellström OR båt";
+		QueryStringQueryBuilder query = QueryBuilderUtils.parse(input);
 		SpringApplication.run(ARESApplication.class, args);
 	}
 

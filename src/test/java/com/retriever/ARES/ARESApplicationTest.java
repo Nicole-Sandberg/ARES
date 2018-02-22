@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import com.retriever.ARES.utils.QueryBuilderUtils;
 import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.junit.Test;
 
 import org.springframework.test.context.ActiveProfiles;
@@ -32,6 +33,11 @@ public class ARESApplicationTest {
 
 		assertTrue(true);
 
+	}
+	public void testStringQuery(){
+		String input = "håkan AND hellström";
+		QueryStringQueryBuilder query = QueryBuilderUtils.parse(input);
+		assertTrue(true);
 	}
 
 
