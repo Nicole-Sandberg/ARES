@@ -31,9 +31,12 @@ public class QueryBuilderUtils {
 	public Optional<SearchRequestBuilder> getRequestBuilderByQuery(SearchQuery query) {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(query.getMaxHits());
 		builder.setFetchSource(Globals.getFIELDS(query.isIncludeStory()), new String[0]);
+		parse("\"väsentlig osäkerhetsfaktor\" NOT verksamhet").ifPresent(
+				builder::setQuery);
 		getRootQuery(query.getQuery()).ifPresent(builder::setQuery);
 		return Optional.of(builder);
 	}
+
 //	private Optional<QueryBuilder> parseQuery(String rawInput) {
 //		// TODO: 2018-02-22 if input sista ordet. stanna och skicka iväg query
 ////		if (rawInput.indexOf('"') >= 0) {
@@ -79,13 +82,15 @@ public class QueryBuilderUtils {
 //		BoolQueryBuilder query = QueryBuilders.boolQuery();
 //		return parseQuery(rawInput);
 //	}
-	public static QueryStringQueryBuilder parse(String input) {
+	public static Optional<QueryStringQueryBuilder> parse(String input) {
 		QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery(input);
 		//queryBuilder.defaultField("df");
-		queryBuilder.field(Globals.MATCH_FIELD);
+		//queryBuilder.field(Globals.MATCH_FIELD);
 		//queryBuilder.analyzer("analyser");
-		queryBuilder.analyzeWildcard(false);
-		return queryBuilder;
+		queryBuilder.lenient(true);
+		queryBuilder.defaultOperator(Operator.OR);
+
+		return Optional.of(queryBuilder);
 
 	}
 
