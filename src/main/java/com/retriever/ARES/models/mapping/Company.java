@@ -14,8 +14,8 @@ public class Company {
 	private List<Report> reports;
 
 	public Company(@JsonProperty("companyname") String companyName,
-			@JsonProperty("orgnr") String orgnr,
-				   @JsonProperty("processingdate") DocValueFormat.DateTime processingDate,
+			@JsonProperty("orgnr") String orgnr, @JsonProperty("processingdate")
+							DocValueFormat.DateTime processingDate,
 			@JsonProperty("report") List<Report> reports) {
 		this.companyName = companyName;
 		this.orgnr = orgnr;

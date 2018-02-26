@@ -15,7 +15,8 @@ public class Report {
 	public Report(@JsonProperty("year") String year,
 				@JsonProperty("from_month") String from_month,
 				@JsonProperty("length_in_month")String length_in_month,
-				@JsonProperty("processingdatedate") DocValueFormat.DateTime processingDateDate,
+				@JsonProperty("processingdatedate")
+							DocValueFormat.DateTime processingDateDate,
 				@JsonProperty("pages") List<Page> pages) {
 		this.year = year;
 		this.from_month = from_month;
@@ -46,6 +47,14 @@ public class Report {
 
 	public void setLength_in_month(String length_in_month) {
 		this.length_in_month = length_in_month;
+	}
+
+	public DocValueFormat.DateTime getProcessingDateDate() {
+		return processingDateDate;
+	}
+
+	public void setProcessingDateDate(DocValueFormat.DateTime processingDateDate) {
+		this.processingDateDate = processingDateDate;
 	}
 
 	public List<Page> getPages() {
