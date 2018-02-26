@@ -2,6 +2,7 @@ package com.retriever.ARES.models.mapping;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.elasticsearch.search.DocValueFormat;
 
 import java.util.List;
 
@@ -9,13 +10,16 @@ import java.util.List;
 public class Company {
 	private String companyName;
 	private String orgnr;
+	private DocValueFormat.DateTime processingDate;
 	private List<Report> reports;
 
 	public Company(@JsonProperty("companyname") String companyName,
 			@JsonProperty("orgnr") String orgnr,
+				   @JsonProperty("processingdate") DocValueFormat.DateTime processingDate,
 			@JsonProperty("report") List<Report> reports) {
 		this.companyName = companyName;
 		this.orgnr = orgnr;
+		this.processingDate = processingDate;
 		this.reports = reports;
 	}
 
