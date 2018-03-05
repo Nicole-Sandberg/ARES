@@ -1,6 +1,5 @@
 package com.retriever.ARES;
 
-import com.retriever.ARES.utils.QueryBuilderUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -32,7 +31,6 @@ public class ARESApplication {
 	private String clusterName;
 
 	public static void main(String[] args) {
-		QueryBuilderUtils.parse("\"name lastname \" OR name AND middle_name NOT year");
 		SpringApplication.run(ARESApplication.class, args);
 	}
 
