@@ -8,15 +8,21 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Company {
+	private String amountEmployee;
 	private String companyName;
+	private String revenue;
 	private String orgnr;
 	private DocValueFormat.DateTime processingDate;
 	private List<Report> reports;
 
-	public Company(@JsonProperty("companyname") String companyName,
+	public Company(@JsonProperty("antall_ansatte_x") String amountEmployee,
+			@JsonProperty("companyname") String companyName,
+			@JsonProperty("omsetting_x") String revenue,
 			@JsonProperty("orgnr") String orgnr, @JsonProperty("processingdate")
 							DocValueFormat.DateTime processingDate,
 			@JsonProperty("report") List<Report> reports) {
+		this.amountEmployee = amountEmployee;
+		this.revenue = revenue;
 		this.companyName = companyName;
 		this.orgnr = orgnr;
 		this.processingDate = processingDate;

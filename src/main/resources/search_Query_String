@@ -1,0 +1,10 @@
+GET annreport.se.v3/retriever/_search
+{
+    "query": {
+        "query_string" : {
+            "query" : "\"väsentlig osäkerhetsfaktor\" NOT verksamhet",
+            "lenient": true,
+            "default_operator": "OR"
+        }
+    }
+}

@@ -33,6 +33,4 @@ public class ARESApplicationTest {
 		assertTrue(true);
 
 	}
-
-
 }
