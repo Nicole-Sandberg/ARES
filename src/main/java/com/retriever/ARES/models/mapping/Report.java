@@ -10,19 +10,19 @@ public class Report {
 	private String from_month;
 	private String length_in_month;
 	private DocValueFormat.DateTime processingDateDate;
-	private List<Object> pages;
+	private List<Page> pages;
 
 	public Report(@JsonProperty("year") String year,
 				@JsonProperty("from_month") String from_month,
 				@JsonProperty("length_in_month")String length_in_month,
 				@JsonProperty("processingdatedate")
 							DocValueFormat.DateTime processingDateDate,
-				@JsonProperty("pages") List<Object> pages) {
+				@JsonProperty("pages") List<List<Page>> pages) {
 		this.year = year;
 		this.from_month = from_month;
 		this.length_in_month = length_in_month;
 		this.processingDateDate = processingDateDate;
-		this.pages = pages;
+		this.pages = pages.get(0);
 	}
 
 	public String getYear() {
@@ -57,11 +57,11 @@ public class Report {
 		this.processingDateDate = processingDateDate;
 	}
 
-	public List<Object> getPages() {
+	public List<Page> getPages() {
 		return pages;
 	}
 
-	public void setPages(List<Object> pages) {
+	public void setPages(List<Page> pages) {
 		this.pages = pages;
 	}
 }

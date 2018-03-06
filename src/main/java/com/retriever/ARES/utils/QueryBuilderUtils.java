@@ -39,7 +39,6 @@ public class QueryBuilderUtils {
 		}
 		QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery(query);
 		queryBuilder.lenient(true);
-		//queryBuilder.defaultField(Globals.MATCH_FIELD);
 		queryBuilder.defaultOperator(Operator.OR);
 		return Optional.of(queryBuilder);
 	}
