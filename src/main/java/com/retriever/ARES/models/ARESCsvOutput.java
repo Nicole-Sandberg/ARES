@@ -30,8 +30,9 @@ public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
 				other.hits - this.hits : other.name.compareTo(this.name);
 	}
 
-	// TODO: 2018-03-13 detta tar bort findbugs error EQ_COMPARETO_USE_OBJECT_EQUALS. 
-	// TODO: 2018-03-13 It is strongly recommended, but not strictly required that (x.compareTo(y)==0) == (x.equals(y)).
+	// TODO: 2018-03-13 detta tar bort findbugs error EQ_COMPARETO_USE_OBJECT_EQUALS.
+	// TODO: 2018-03-13 It is strongly recommended, but not strictly required that
+	// (x.compareTo(y)==0) == (x.equals(y)).
 	@Override
 	public int hashCode() {
 		return super.hashCode();
