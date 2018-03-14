@@ -29,6 +29,9 @@ public class Controller {
 
 	@RequestMapping("test")
 	public void getExcel(@CurrentAccount Account account, HttpServletResponse response) {
+		// TODO: 2018-03-13 fält som ska sökas på = headers förutom företag
+		// TODO: 2018-03-13 match med ord och DocValueFormat.DateTime processingDateDate
+		// TODO: 2018-03-13 resultat = företag med träffar på query med främst datum
 		String header = "företag,antal träffar,abc,verksamhetbla,xyz,söksträng2\n";
 
 		List<ARESCsvOutput> results = new ArrayList<>();
@@ -47,7 +50,7 @@ public class Controller {
 		try {
 			response.setContentType("application/csv");
 			response.setHeader("content-disposition",
-					"attachment;filename =filename.csv");
+					"attachment;filename =arsrapport-retriever.csv");
 			OutputStream out = response.getOutputStream();
 			out.write(header.getBytes(Charset.forName("UTF-8")));
 			final ARESCsvOutput object = new ARESCsvOutput(
