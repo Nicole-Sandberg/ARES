@@ -5,6 +5,8 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,8 @@ import java.util.Optional;
 public class QueryBuilderUtils {
 	@Autowired
 	private Client client;
+
+	private static Logger log = LoggerFactory.getLogger(QueryBuilderUtils.class);
 
 	public static QueryBuilder getMultiNestedQuery(String query) {
 
@@ -29,7 +33,9 @@ public class QueryBuilderUtils {
 	public Optional<SearchRequestBuilder> getRequestBuilderByQuery(SearchQuery query) {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(query.getMaxHits());
 		builder.setFetchSource(Globals.getFIELDS(query.isIncludeStory()), new String[0]);
+		builder.setFrom(query.getOffset());
 		parseQuery(query.getQuery()).ifPresent(builder::setQuery);
+		log.info(builder.toString());
 		return Optional.of(builder);
 	}
 
@@ -40,6 +46,7 @@ public class QueryBuilderUtils {
 		QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery(query);
 		queryBuilder.lenient(true);
 		queryBuilder.defaultOperator(Operator.OR);
+
 		return Optional.of(queryBuilder);
 	}
 	private SearchRequestBuilder getBuilderWithMaxHits(int maxHits) {

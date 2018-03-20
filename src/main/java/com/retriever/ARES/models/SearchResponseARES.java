@@ -18,6 +18,7 @@ public class SearchResponseARES {
 	}
 
 	public SearchResponseARES(SearchQuery query, List<SearchResponse> responses) {
+
 		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getTotalHits();
 		responses.forEach(response ->
