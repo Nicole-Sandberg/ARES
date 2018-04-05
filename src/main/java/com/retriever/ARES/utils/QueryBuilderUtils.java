@@ -6,7 +6,6 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +17,7 @@ public class QueryBuilderUtils {
 	@Autowired
 	private Client client;
 
-	private static Logger log = LoggerFactory.getLogger(QueryBuilderUtils.class);
+	private static Logger log = org.slf4j.LoggerFactory.getLogger(QueryBuilderUtils.class);
 
 	public static QueryBuilder getMultiNestedQuery(String query) {
 
@@ -37,6 +36,33 @@ public class QueryBuilderUtils {
 		parseQuery(query.getQuery()).ifPresent(builder::setQuery);
 		log.info(builder.toString());
 		return Optional.of(builder);
+	}
+
+	private Optional<SearchRequestBuilder> test(SearchQuery searchQuery){
+		SearchRequestBuilder builder = getBuilderWithMaxHits(10);
+		builder.setFetchSource(Globals.getFIELDS(searchQuery.isIncludeStory()), new String[0]);
+		builder.setFrom(searchQuery.getOffset());
+		parseQueryTest(searchQuery.getQuery()).ifPresent(builder::setQuery);
+		return Optional.of(builder);
+	}
+
+	private Optional<QueryBuilder> parseQueryTest(String query) {
+
+		//hasparent type, query,score
+		BoolQueryBuilder mustQuery = QueryBuilders.boolQuery();
+		BoolQueryBuilder shouldQuery = QueryBuilders.boolQuery();
+		TermQueryBuilder termQueryOne = QueryBuilders.termQuery("report",2018).queryName("termOne");
+		TermQueryBuilder termQueryTwo = QueryBuilders.termQuery("report",2019).queryName("termTwo");
+		mustQuery.must(QueryBuilders.hasParentQuery("report",
+				shouldQuery.should(termQueryOne).minimumShouldMatch(1),true)
+				.queryName("parent").innerHit(new InnerHitBuilder(),true));
+		log.debug(mustQuery.toString());
+		return Optional.of(mustQuery);
+		/*return QueryBuilders.boolQuery().must(
+				QueryBuilders.hasParentQuery("report",
+						QueryBuilders.boolQuery()
+								.should(QueryBuilders.termQuery("year", "2018").queryName("term")).queryName("innerBool")).queryName("parent")
+		).queryName("outerBool")); */
 	}
 
 	private Optional<QueryStringQueryBuilder> parseQuery(String query) {
