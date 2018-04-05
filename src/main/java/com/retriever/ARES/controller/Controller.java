@@ -27,6 +27,18 @@ public class Controller {
 	@Autowired
 	ElasticsearchService searchService;
 
+	@RequestMapping("testName")
+	public ResponseEntity<SearchResponseARES> testName(@CurrentAccount Account account,
+														@RequestBody SearchQuery query) {
+		SearchResponseARES result = searchService.test(query)
+				.map(response -> new SearchResponseARES(query,
+						Arrays.asList(response)))
+				.orElse(new SearchResponseARES());
+		ResponseEntity<SearchResponseARES> result2 =
+				new ResponseEntity<>(result, HttpStatus.OK);
+		return result2;
+	}
+
 	@RequestMapping("test")
 	public void getExcel(@CurrentAccount Account account, HttpServletResponse response) {
 		// TODO: 2018-03-13 fält som ska sökas på = headers förutom företag

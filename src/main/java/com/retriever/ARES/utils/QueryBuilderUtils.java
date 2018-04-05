@@ -17,7 +17,8 @@ public class QueryBuilderUtils {
 	@Autowired
 	private Client client;
 
-	private static Logger log = org.slf4j.LoggerFactory.getLogger(QueryBuilderUtils.class);
+	private static Logger log = org.slf4j.LoggerFactory.
+			getLogger(QueryBuilderUtils.class);
 
 	public static QueryBuilder getMultiNestedQuery(String query) {
 
@@ -38,9 +39,10 @@ public class QueryBuilderUtils {
 		return Optional.of(builder);
 	}
 
-	private Optional<SearchRequestBuilder> test(SearchQuery searchQuery){
+	public Optional<SearchRequestBuilder> test(SearchQuery searchQuery) {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(10);
-		builder.setFetchSource(Globals.getFIELDS(searchQuery.isIncludeStory()), new String[0]);
+		builder.setFetchSource(Globals.getFIELDS(searchQuery.isIncludeStory()),
+				new String[0]);
 		builder.setFrom(searchQuery.getOffset());
 		parseQueryTest(searchQuery.getQuery()).ifPresent(builder::setQuery);
 		return Optional.of(builder);
@@ -51,17 +53,23 @@ public class QueryBuilderUtils {
 		//hasparent type, query,score
 		BoolQueryBuilder mustQuery = QueryBuilders.boolQuery();
 		BoolQueryBuilder shouldQuery = QueryBuilders.boolQuery();
-		TermQueryBuilder termQueryOne = QueryBuilders.termQuery("report",2018).queryName("termOne");
-		TermQueryBuilder termQueryTwo = QueryBuilders.termQuery("report",2019).queryName("termTwo");
+		TermQueryBuilder termQueryOne = QueryBuilders.termQuery("report", 2018)
+				.queryName("termOne");
+		TermQueryBuilder termQueryTwo = QueryBuilders.termQuery("report", 2019)
+				.queryName("termTwo");
 		mustQuery.must(QueryBuilders.hasParentQuery("report",
-				shouldQuery.should(termQueryOne).minimumShouldMatch(1),true)
-				.queryName("parent").innerHit(new InnerHitBuilder(),true));
+				shouldQuery.should(termQueryOne)
+				.should(termQueryTwo).minimumShouldMatch(1), true)
+				.queryName("parent").innerHit(new InnerHitBuilder(), true)
+		);
 		log.debug(mustQuery.toString());
 		return Optional.of(mustQuery);
 		/*return QueryBuilders.boolQuery().must(
 				QueryBuilders.hasParentQuery("report",
 						QueryBuilders.boolQuery()
-								.should(QueryBuilders.termQuery("year", "2018").queryName("term")).queryName("innerBool")).queryName("parent")
+								.should(QueryBuilders.termQuery("year",
+								"2018").queryName("term")).
+								queryName("innerBool")).queryName("parent")
 		).queryName("outerBool")); */
 	}
 
