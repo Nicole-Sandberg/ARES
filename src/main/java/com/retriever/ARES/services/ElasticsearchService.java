@@ -33,6 +33,9 @@ public class ElasticsearchService {
 		//	 query.getQueryObject().flatMap(this::actionGet);
 	return queryBuilder.getRequestBuilderByQuery(query).flatMap(this::actionGet);
 	}
+	public Optional<SearchResponse> test(SearchQuery query) {
+		return queryBuilder.test(query).flatMap(this::actionGet);
+	}
 
 
 
