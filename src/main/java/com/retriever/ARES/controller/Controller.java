@@ -27,6 +27,14 @@ public class Controller {
 	@Autowired
 	ElasticsearchService searchService;
 
+	/**
+	 * metod som testar named queries i en nestad query. Ej fått detta att fungera.
+	 * fungerar med onestlande boolquerys
+	 * @param account
+	 * @param query
+	 * @return
+	 */
+//----------------------test Named queries---------------------------
 	@RequestMapping("testName")
 	public ResponseEntity<SearchResponseARES> testName(@CurrentAccount Account account,
 														@RequestBody SearchQuery query) {
@@ -39,23 +47,27 @@ public class Controller {
 		return result2;
 	}
 
+	/**
+	 * metod som skriver ut CSV-fil till kund. sorterad efter flest träffar per sök.
+	 * sökmetod ej klar kolla umeå
+	 * @param account
+	 * @param response
+	 */
+//--------------------------test Umeå CSV---------------------------
 	@RequestMapping("test")
 	public void getExcel(@CurrentAccount Account account, HttpServletResponse response) {
-		// TODO: 2018-03-13 fält som ska sökas på = headers förutom företag
-		// TODO: 2018-03-13 match med ord och DocValueFormat.DateTime processingDateDate
-		// TODO: 2018-03-13 resultat = företag med träffar på query med främst datum
 		String header = "företag,antal träffar,abc,verksamhetbla,xyz,söksträng2\n";
 
 		List<ARESCsvOutput> results = new ArrayList<>();
-		results.add(new ARESCsvOutput("5560125793",  4, Arrays.asList(
+		results.add(new ARESCsvOutput("5560125793",	4, Arrays.asList(
 				"X", "X", "X", "X")));
-		results.add(new ARESCsvOutput("5560125790",  3, Arrays.asList(
+		results.add(new ARESCsvOutput("5560125790",	3, Arrays.asList(
 				"X", "X", "O", "X")));
-		results.add(new ARESCsvOutput("5560125799",  1, Arrays.asList(
+		results.add(new ARESCsvOutput("5560125799",	1, Arrays.asList(
 				"X", "X", "O", "X")));
-		results.add(new ARESCsvOutput("5560125791",  1, Arrays.asList(
+		results.add(new ARESCsvOutput("5560125791",	1, Arrays.asList(
 				"O", "O", "O", "X")));
-		results.add(new ARESCsvOutput("5560125792",  2, Arrays.asList(
+		results.add(new ARESCsvOutput("5560125792",	2, Arrays.asList(
 				"X", "O", "O", "X")));
 
 		Collections.sort(results);
@@ -82,6 +94,19 @@ public class Controller {
 		}
 	}
 
+	/**
+	 * använder elasticsearch querystringquerybuilder som parsar query efter AND,OR,NOT
+	 * @param account
+	 * @param query
+	 * ex:
+	 * "query" : "betydande tvivel",
+	"documentCreatedAfter" : "2018-03-03T09:06:04",
+	"maxHits" : 10,
+	"includeStory" : false,
+	"offset" : 0
+	 * @return
+	 */
+//-------------- QueryStringQueryBuilder----------------------------
 	@RequestMapping("search")
 	public ResponseEntity<SearchResponseARES> search(@CurrentAccount Account account,
 													@RequestBody SearchQuery query) {
@@ -93,6 +118,34 @@ public class Controller {
 
 	private SearchResponseARES getData(SearchQuery query) {
 		SearchResponseARES result = searchService.search(query)
+				.map(response -> new SearchResponseARES(query,
+						Arrays.asList(response)))
+				.orElse(new SearchResponseARES());
+		return result;
+
+	}
+
+	/**
+	 * metod som söker med multi nestlade querys och ger innerhits(report år och månad)
+	 * @param account
+	 * @param query
+	 * @return
+	 */
+
+	//-------------------------------TEST 2 umeå--------------------------------------
+	@RequestMapping("searchUmea")
+	public ResponseEntity<SearchResponseARES> searchUmea(
+			@CurrentAccount Account account, @RequestBody SearchQuery query) {
+		SearchResponseARES response = getDataString(query.getQuery());
+		ResponseEntity<SearchResponseARES> result =
+				new ResponseEntity<>(response, HttpStatus.OK);
+		return result;
+	}
+
+	// TODO: 2018-04-10 response måste kopplas till company med fält:
+	// TODO: 2018-04-10   sturktur orgnr, namn, rapport månad, rapport år
+	private SearchResponseARES getDataString(String query) {
+		SearchResponseARES result = searchService.searchUmeå(query)
 				.map(response -> new SearchResponseARES(query,
 						Arrays.asList(response)))
 				.orElse(new SearchResponseARES());

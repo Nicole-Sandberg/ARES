@@ -7,22 +7,26 @@ public class Globals {
 	private Globals() {
 	}
 
-	public static final String INDEX = "annreport.se.v3";
+	public static final String INDEX = "annreport.se.v4";
 	public static final String TYPE = "retriever";
 	public static final String PATH_ONE = "report";
 	public static final String PATH_TWO = "report.pages";
 	public static final String MATCH_FIELD = "report.pages.story";
 
 	private static final String[] FIELDS = new String[] {
-			"companyname",
+			"ftgnamn",
 			"orgnr",
 			"report.year",
 			"report.from_month",
 			"report.length_in_month",
 			"report.pages.page"
 	};
+	private static final String[]COMPANYNAMEANDORGNR = new String[]{
+			"ftgnamn",
+			"orgnr"
+	};
 	private static final String[] FIELDSANDSTORY = new String[] {
-			"companyname",
+			"ftgnamn",
 			"orgnr",
 			"report.year",
 			"report.from_month",
@@ -39,6 +43,9 @@ public class Globals {
 	public static String[] getFIELDS(boolean includeStory) {
 		String[] fields	= includeStory ? FIELDSANDSTORY : FIELDS;
 		return Arrays.copyOf(fields, fields.length);
+	}
+	public static String[] getCompanynameandorgnr() {
+		return Arrays.copyOf(COMPANYNAMEANDORGNR, COMPANYNAMEANDORGNR.length);
 	}
 
 	public static String[] getKeys() {

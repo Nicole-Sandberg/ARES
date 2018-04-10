@@ -1,0 +1,27 @@
+GET annreport.se.v4/retriever/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "ftgnamn": {
+              "value": "Aktiebolaget Volvo",
+              "_name": "volvo"
+
+            }
+          }
+          },
+            {
+              "term": {
+                "ftgnamn": {
+                  "value": "AddPro Aktiebolag",
+                  "_name": "addpro"
+              }
+            }
+            }
+      ]
+      , "minimum_should_match": 1
+    }
+  }
+  }
