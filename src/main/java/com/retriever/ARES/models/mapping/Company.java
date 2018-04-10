@@ -14,12 +14,14 @@ public class Company {
 	private String orgnr;
 	private DocValueFormat.DateTime processingDate;
 	private List<Report> reports;
+	private String county;
 
-	public Company(@JsonProperty("antall_ansatte_x") String amountEmployee,
-			@JsonProperty("companyname") String companyName,
-			@JsonProperty("omsetting_x") String revenue,
+	public Company(@JsonProperty("anst_x") String amountEmployee,
+			@JsonProperty("ftgnamn") String companyName,
+			@JsonProperty("oms_x") String revenue,
 			@JsonProperty("orgnr") String orgnr, @JsonProperty("processingdate")
 							DocValueFormat.DateTime processingDate,
+			@JsonProperty("sate_lan") String county,
 			@JsonProperty("report") List<Report> reports) {
 		this.amountEmployee = amountEmployee;
 		this.revenue = revenue;
@@ -27,9 +29,18 @@ public class Company {
 		this.orgnr = orgnr;
 		this.processingDate = processingDate;
 		this.reports = reports;
+				this.county = county;
 	}
 
-	public String getCompanyName() {
+		public String getCounty() {
+				return county;
+		}
+
+		public void setCounty(String county) {
+				this.county = county;
+		}
+
+		public String getCompanyName() {
 		return companyName;
 	}
 

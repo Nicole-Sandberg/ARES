@@ -10,7 +10,7 @@ server:
   
 mail:
   error:
-    to: daniel.collin@retriever.se
+    to: nicole.sandberg@retriever.se
 
 retriever:
   security:

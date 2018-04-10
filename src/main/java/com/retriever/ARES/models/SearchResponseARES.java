@@ -24,6 +24,13 @@ public class SearchResponseARES {
 		responses.forEach(response ->
 		results.addAll(ResponseUtils.parseHits(response)));
 	}
+	public SearchResponseARES(String query, List<SearchResponse> responses) {
+
+		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
+				.getTotalHits();
+		responses.forEach(response ->
+				results.addAll(ResponseUtils.parseHits(response)));
+	}
 
 	public int getFromIndex() {
 		return fromIndex;
