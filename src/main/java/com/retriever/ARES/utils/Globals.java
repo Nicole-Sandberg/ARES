@@ -21,9 +21,11 @@ public class Globals {
 			"report.length_in_month",
 			"report.pages.page"
 	};
-	private static final String[]COMPANYNAMEANDORGNR = new String[]{
+	private static final String[] UMEASEARCHRESULTFIELDS = new String[]{
 			"ftgnamn",
-			"orgnr"
+			"orgnr",
+			"report.year",
+			"report.from_month"
 	};
 	private static final String[] FIELDSANDSTORY = new String[] {
 			"ftgnamn",
@@ -44,8 +46,8 @@ public class Globals {
 		String[] fields	= includeStory ? FIELDSANDSTORY : FIELDS;
 		return Arrays.copyOf(fields, fields.length);
 	}
-	public static String[] getCompanynameandorgnr() {
-		return Arrays.copyOf(COMPANYNAMEANDORGNR, COMPANYNAMEANDORGNR.length);
+	public static String[] getUmeasearchresultfields() {
+		return Arrays.copyOf(UMEASEARCHRESULTFIELDS, UMEASEARCHRESULTFIELDS.length);
 	}
 
 	public static String[] getKeys() {

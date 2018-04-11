@@ -30,7 +30,7 @@ public class QueryBuilderUtils {
 	}
 	public Optional<SearchRequestBuilder> umea(String query) {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(10);
-		builder.setFetchSource(Globals.getCompanynameandorgnr(), new String[0]);
+		builder.setFetchSource(Globals.getUmeasearchresultfields(), new String[0]);
 		getNestedQueryWithInnerHit(query).ifPresent(builder::setQuery);
 		log.info(builder.toString());
 		return Optional.of(builder);
