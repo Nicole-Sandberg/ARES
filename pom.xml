@@ -52,11 +52,6 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>5.4.1</version>
-        </dependency>
     </dependencies>
 	<repositories>
 		<repository>

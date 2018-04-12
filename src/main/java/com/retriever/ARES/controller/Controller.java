@@ -142,14 +142,15 @@ public class Controller {
 		return result;
 	}
 
-	// TODO: 2018-04-10 response måste kopplas till company med fält:
-	// TODO: 2018-04-10   sturktur orgnr, namn, rapport månad, rapport år
+	// TODO: 2018-04-11 searchresult = name,orgnr,
+	// report innehit -> report.year,report.from_month
 	private SearchResponseARES getDataString(String query) {
-		SearchResponseARES result = searchService.searchUmeå(query)
+		SearchResponseARES result = searchService.searchUmea(query)
 				.map(response -> new SearchResponseARES(query,
 						Arrays.asList(response)))
 				.orElse(new SearchResponseARES());
 		return result;
 
 	}
+
 }

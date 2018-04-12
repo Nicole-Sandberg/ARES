@@ -1,10 +1,11 @@
 package com.retriever.ARES.models.mapping;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.elasticsearch.search.DocValueFormat;
 
 import java.util.List;
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Report {
 	private String year;
 	private String from_month;
