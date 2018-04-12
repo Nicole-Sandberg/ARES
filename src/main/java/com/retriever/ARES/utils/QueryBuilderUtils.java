@@ -29,7 +29,8 @@ public class QueryBuilderUtils {
 		return QueryBuilders.matchQuery(Globals.MATCH_FIELD, query);
 	}
 	public Optional<SearchRequestBuilder> umea(String query) {
-		SearchRequestBuilder builder = getBuilderWithMaxHits(10);
+		// TODO: 2018-04-11  maxhit
+		SearchRequestBuilder builder = getBuilderWithMaxHits(1);
 		builder.setFetchSource(Globals.getUmeasearchresultfields(), new String[0]);
 		getNestedQueryWithInnerHit(query).ifPresent(builder::setQuery);
 		log.info(builder.toString());

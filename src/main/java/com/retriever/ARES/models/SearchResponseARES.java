@@ -3,16 +3,19 @@ package com.retriever.ARES.models;
 import com.retriever.ARES.models.mapping.Company;
 import com.retriever.ARES.utils.ResponseUtils;
 import org.elasticsearch.action.search.SearchResponse;
+import org.slf4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResponseARES {
-	private int fromIndex;
-	private int toIndex;
 	private long returnedHits;
 	private long totalHits;
+	private int offset;
 	private List<Company> results = new ArrayList<>();
+
+	private static Logger log = org.slf4j.LoggerFactory.
+			getLogger(SearchResponseARES.class);
 
 	public SearchResponseARES() {
 	}
@@ -21,31 +24,22 @@ public class SearchResponseARES {
 
 		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getTotalHits();
+		this.returnedHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
+				.getHits().length;
+		this.offset = query.getOffset();
+
 		responses.forEach(response ->
-		results.addAll(ResponseUtils.parseHits(response)));
+				results.addAll(ResponseUtils.parseHits(response)));
 	}
 	public SearchResponseARES(String query, List<SearchResponse> responses) {
 
 		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getTotalHits();
+		this.returnedHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
+				.getHits().length;
 		responses.forEach(response ->
-				results.addAll(ResponseUtils.parseHits(response)));
-	}
+				results.addAll(ResponseUtils.parseHitsForUmea(response)));
 
-	public int getFromIndex() {
-		return fromIndex;
-	}
-
-	public void setFromIndex(int fromIndex) {
-		this.fromIndex = fromIndex;
-	}
-
-	public int getToIndex() {
-		return toIndex;
-	}
-
-	public void setToIndex(int toIndex) {
-		this.toIndex = toIndex;
 	}
 
 	public long getReturnedHits() {

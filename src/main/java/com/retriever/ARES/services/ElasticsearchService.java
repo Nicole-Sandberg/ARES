@@ -56,7 +56,7 @@ public class ElasticsearchService {
 		}
 	}
 
-		public Optional<SearchResponse> searchUmeå(String query) {
+		public Optional<SearchResponse> searchUmea(String query) {
 		return queryBuilder.umea(query).flatMap(this::actionGet);
 		}
 }

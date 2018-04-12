@@ -15,24 +15,34 @@ public class Company {
 	private DocValueFormat.DateTime processingDate;
 	private List<Report> reports;
 	private String county;
+	private List<InnerHitObject> innerHitsReport;
+
+
+
 
 	public Company(@JsonProperty("anst_x") String amountEmployee,
 			@JsonProperty("ftgnamn") String companyName,
 			@JsonProperty("oms_x") String revenue,
-			@JsonProperty("orgnr") String orgnr, @JsonProperty("processingdate")
+			@JsonProperty("orgnr") String orgnr,
+			@JsonProperty("processingdate")
 							DocValueFormat.DateTime processingDate,
 			@JsonProperty("sate_lan") String county,
-			@JsonProperty("report") List<Report> reports) {
+			@JsonProperty("report") List<Report> reports
+					) {
 		this.amountEmployee = amountEmployee;
 		this.revenue = revenue;
 		this.companyName = companyName;
 		this.orgnr = orgnr;
 		this.processingDate = processingDate;
 		this.reports = reports;
-				this.county = county;
+		this.county = county;
 	}
 
-		public String getCounty() {
+	public Company(List<InnerHitObject> hitObjects) {
+		this.innerHitsReport = hitObjects;
+	}
+
+	public String getCounty() {
 				return county;
 		}
 
@@ -62,5 +72,10 @@ public class Company {
 
 	public void setReports(List<Report> reports) {
 		this.reports = reports;
+	}
+
+
+	public void addInnerHits(List<InnerHitObject> hitObjects) {
+		this.innerHitsReport = hitObjects;
 	}
 }
