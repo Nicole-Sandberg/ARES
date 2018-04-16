@@ -87,6 +87,12 @@ public class QueryBuilderUtils {
 		QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery(query);
 		queryBuilder.lenient(true);
 		queryBuilder.defaultOperator(Operator.OR);
+		queryBuilder.minimumShouldMatch(String.valueOf(1));
+
+		//queryBuilder.field("report.pages.story");
+		//  då går det ej att söka på orgnamn eller nr.
+
+
 		return Optional.of(queryBuilder);
 	}
 	private SearchRequestBuilder getBuilderWithMaxHits(int maxHits) {
@@ -98,12 +104,14 @@ public class QueryBuilderUtils {
 				.INDEX);
 	}
 	private Optional<QueryBuilder> getNestedQueryWithInnerHit(String query) {
+		// TODO: 2018-04-16 flera queries, vilken fick trägg. namcedquery
 		NestedQueryBuilder nestedQueryBuilder =  QueryBuilders.nestedQuery(
 				Globals.PATH_ONE, getMultiNestedQuery(query), ScoreMode.Avg);
 		nestedQueryBuilder.innerHit(new InnerHitBuilder(), true);
 		nestedQueryBuilder.innerHit()
 				.addDocValueField("report.year")
 				.addDocValueField("report.from_month");
+		nestedQueryBuilder.queryName(query);
 		return Optional.of(nestedQueryBuilder);
 	}
 

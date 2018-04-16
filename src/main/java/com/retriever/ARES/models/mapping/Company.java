@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.elasticsearch.search.DocValueFormat;
 
+import java.util.Arrays;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,6 +17,7 @@ public class Company {
 	private List<Report> reports;
 	private String county;
 	private List<InnerHitObject> innerHitsReport;
+	private String[] matchedQueries;
 
 
 
@@ -78,4 +80,46 @@ public class Company {
 	public void addInnerHits(List<InnerHitObject> hitObjects) {
 		this.innerHitsReport = hitObjects;
 	}
+
+		public List<InnerHitObject> getInnerHitsReport() {
+				return innerHitsReport;
+		}
+
+		public void setInnerHitsReport(List<InnerHitObject> innerHitsReport) {
+				this.innerHitsReport = innerHitsReport;
+		}
+
+		public void setAmountEmployee(String amountEmployee) {
+				this.amountEmployee = amountEmployee;
+		}
+
+		public void setRevenue(String revenue) {
+				this.revenue = revenue;
+		}
+
+		public void setProcessingDate(DocValueFormat.DateTime processingDate) {
+				this.processingDate = processingDate;
+		}
+
+		public String getAmountEmployee() {
+				return amountEmployee;
+		}
+
+		public String getRevenue() {
+				return revenue;
+		}
+
+		public DocValueFormat.DateTime getProcessingDate() {
+				return processingDate;
+		}
+
+		public void addNameOfHits(String[] matchedQueries) {
+			this.matchedQueries = Arrays.copyOf(matchedQueries, matchedQueries.length);
+		}
+
+		public String[] getMatchedQueries() {
+				return Arrays.copyOf(matchedQueries, matchedQueries.length);
+		}
+
+
 }

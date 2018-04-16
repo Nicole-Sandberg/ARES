@@ -142,11 +142,9 @@ public class Controller {
 		return result;
 	}
 
-	// TODO: 2018-04-11 searchresult = name,orgnr,
-	// report innehit -> report.year,report.from_month
 	private SearchResponseARES getDataString(String query) {
 		SearchResponseARES result = searchService.searchUmea(query)
-				.map(response -> new SearchResponseARES(query,
+				.map(response -> new SearchResponseARES(
 						Arrays.asList(response)))
 				.orElse(new SearchResponseARES());
 		return result;
