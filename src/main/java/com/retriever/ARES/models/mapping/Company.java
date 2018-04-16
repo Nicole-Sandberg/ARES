@@ -9,16 +9,16 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Company {
-	private String amountEmployee;
+	
 	private String companyName;
-	private String revenue;
 	private String orgnr;
-	private DocValueFormat.DateTime processingDate;
-	private List<Report> reports;
-	private String county;
 	private List<InnerHitObject> innerHitsReport;
 	private String[] matchedQueries;
-
+	private String amountEmployee;
+	private String revenue;
+	private DocValueFormat.DateTime processingDate;
+	private String county;
+	private List<Report> reports;
 
 
 
@@ -44,9 +44,9 @@ public class Company {
 		this.innerHitsReport = hitObjects;
 	}
 
-	public String getCounty() {
-				return county;
-		}
+//	public String getCounty() {
+//				return county;
+//		}
 
 		public void setCounty(String county) {
 				this.county = county;
@@ -68,9 +68,9 @@ public class Company {
 		this.orgnr = orgnr;
 	}
 
-	public List<Report> getReports() {
-		return reports;
-	}
+//	public List<Report> getReports() {
+//		return reports;
+//	}
 
 	public void setReports(List<Report> reports) {
 		this.reports = reports;
@@ -101,17 +101,17 @@ public class Company {
 				this.processingDate = processingDate;
 		}
 
-		public String getAmountEmployee() {
-				return amountEmployee;
-		}
+//		public String getAmountEmployee() {
+//				return amountEmployee;
+//		}
+//
+//		public String getRevenue() {
+//				return revenue;
+//		}
 
-		public String getRevenue() {
-				return revenue;
-		}
-
-		public DocValueFormat.DateTime getProcessingDate() {
-				return processingDate;
-		}
+//		public DocValueFormat.DateTime getProcessingDate() {
+//				return processingDate;
+//		}
 
 		public void addNameOfHits(String[] matchedQueries) {
 			this.matchedQueries = Arrays.copyOf(matchedQueries, matchedQueries.length);

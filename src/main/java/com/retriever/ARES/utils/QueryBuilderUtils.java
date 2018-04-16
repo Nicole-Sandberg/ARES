@@ -29,10 +29,10 @@ public class QueryBuilderUtils {
 		return QueryBuilders.matchQuery(Globals.MATCH_FIELD, query);
 	}
 	public Optional<SearchRequestBuilder> umea(String query) {
-		// TODO: 2018-04-11  maxhit
+		// TODO: 2018-04-11	maxhit
 		SearchRequestBuilder builder = getBuilderWithMaxHits(1);
 		builder.setFetchSource(Globals.getUmeasearchresultfields(), new String[0]);
-		getNestedQueryWithInnerHit(query).ifPresent(builder::setQuery);
+			getNestedQueryWithInnerHit(query).ifPresent(builder::setQuery);
 		log.info(builder.toString());
 		return Optional.of(builder);
 	}
@@ -90,7 +90,7 @@ public class QueryBuilderUtils {
 		queryBuilder.minimumShouldMatch(String.valueOf(1));
 
 		//queryBuilder.field("report.pages.story");
-		//  då går det ej att söka på orgnamn eller nr.
+		//	då går det ej att söka på orgnamn eller nr.
 
 
 		return Optional.of(queryBuilder);
@@ -104,8 +104,8 @@ public class QueryBuilderUtils {
 				.INDEX);
 	}
 	private Optional<QueryBuilder> getNestedQueryWithInnerHit(String query) {
-		// TODO: 2018-04-16 flera queries, vilken fick trägg. namcedquery
-		NestedQueryBuilder nestedQueryBuilder =  QueryBuilders.nestedQuery(
+		// TODO: 2018-04-16 flera queries, vilken fick träff. namcedquery
+		NestedQueryBuilder nestedQueryBuilder =	QueryBuilders.nestedQuery(
 				Globals.PATH_ONE, getMultiNestedQuery(query), ScoreMode.Avg);
 		nestedQueryBuilder.innerHit(new InnerHitBuilder(), true);
 		nestedQueryBuilder.innerHit()
@@ -116,7 +116,7 @@ public class QueryBuilderUtils {
 	}
 
 	public static QueryBuilder getNestedQuery(String query) {
-		return   QueryBuilders.nestedQuery(
+		return	 QueryBuilders.nestedQuery(
 				Globals.PATH_ONE, getMultiNestedQuery(query), ScoreMode.Avg);
 	}
 

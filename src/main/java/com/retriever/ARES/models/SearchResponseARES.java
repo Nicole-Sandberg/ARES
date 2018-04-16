@@ -20,29 +20,18 @@ public class SearchResponseARES {
 	public SearchResponseARES() {
 	}
 
-	public SearchResponseARES(SearchQuery query, List<SearchResponse> responses) {
+	public SearchResponseARES(int offset, List<SearchResponse> responses) {
 
 		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getTotalHits();
 		this.returnedHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getHits().length;
-		this.offset = query.getOffset();
-
-		responses.forEach(response ->
-				results.addAll(ResponseUtils.parseHits(response)));
-	}
-
-	// TODO: 2018-04-16 to bort rep kod
-	public SearchResponseARES(List<SearchResponse> responses) {
-
-		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
-				.getTotalHits();
-		this.returnedHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
-				.getHits().length;
+		this.offset = offset;
 		responses.forEach(response ->
 				results.addAll(ResponseUtils.parseHits(response)));
 
 	}
+
 
 	public long getReturnedHits() {
 		return returnedHits;

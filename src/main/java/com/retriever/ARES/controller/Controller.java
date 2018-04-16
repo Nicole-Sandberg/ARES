@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import com.retriever.spring.config.CurrentAccount;
@@ -39,7 +40,7 @@ public class Controller {
 	public ResponseEntity<SearchResponseARES> testName(@CurrentAccount Account account,
 														@RequestBody SearchQuery query) {
 		SearchResponseARES result = searchService.test(query)
-				.map(response -> new SearchResponseARES(query,
+				.map(response -> new SearchResponseARES(query.getOffset(),
 						Arrays.asList(response)))
 				.orElse(new SearchResponseARES());
 		ResponseEntity<SearchResponseARES> result2 =
@@ -118,7 +119,7 @@ public class Controller {
 
 	private SearchResponseARES getData(SearchQuery query) {
 		SearchResponseARES result = searchService.search(query)
-				.map(response -> new SearchResponseARES(query,
+				.map(response -> new SearchResponseARES(query.getOffset(),
 						Arrays.asList(response)))
 				.orElse(new SearchResponseARES());
 		return result;
@@ -133,18 +134,22 @@ public class Controller {
 	 */
 
 	//-------------------------------TEST 2 umeå--------------------------------------
-	@RequestMapping("searchUmea")
+	@RequestMapping(value = "searchUmea", method = RequestMethod.POST)
 	public ResponseEntity<SearchResponseARES> searchUmea(
-			@CurrentAccount Account account, @RequestBody SearchQuery query) {
-		SearchResponseARES response = getDataString(query.getQuery());
+			@CurrentAccount Account account, @RequestBody List<SearchQuery> query) {
+		SearchResponseARES response = getDataUmea(query.get(0));
+		SearchResponseARES responseTwo = getDataUmea(query.get(1));
+		Map<String, List<SearchResponseARES>> resultsMap = new HashMap<>();
+		resultsMap.put(String.valueOf(response.getResults()
+				.get(0).getMatchedQueries()), Collections.singletonList(response));
 		ResponseEntity<SearchResponseARES> result =
 				new ResponseEntity<>(response, HttpStatus.OK);
 		return result;
 	}
 
-	private SearchResponseARES getDataString(String query) {
-		SearchResponseARES result = searchService.searchUmea(query)
-				.map(response -> new SearchResponseARES(
+	private SearchResponseARES getDataUmea(SearchQuery query) {
+		SearchResponseARES result = searchService.searchUmea(query.getQuery())
+				.map(response -> new SearchResponseARES(query.getOffset(),
 						Arrays.asList(response)))
 				.orElse(new SearchResponseARES());
 		return result;
