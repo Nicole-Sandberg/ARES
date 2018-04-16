@@ -31,14 +31,16 @@ public class SearchResponseARES {
 		responses.forEach(response ->
 				results.addAll(ResponseUtils.parseHits(response)));
 	}
-	public SearchResponseARES(String query, List<SearchResponse> responses) {
+
+	// TODO: 2018-04-16 to bort rep kod
+	public SearchResponseARES(List<SearchResponse> responses) {
 
 		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getTotalHits();
 		this.returnedHits = responses.isEmpty() ? 0 : responses.get(0).getHits()
 				.getHits().length;
 		responses.forEach(response ->
-				results.addAll(ResponseUtils.parseHitsForUmea(response)));
+				results.addAll(ResponseUtils.parseHits(response)));
 
 	}
 
