@@ -19,24 +19,52 @@ public class QueryBuilderUtils {
 	private static Logger log = org.slf4j.LoggerFactory.
 			getLogger(QueryBuilderUtils.class);
 
-	public static QueryBuilder getMultiNestedQuery(String query) {
+	/**
+	 * Kör en nestlad query med match och path "pages".
+	 * @param query String
+	 * @return QueryBuilder
+	 */
+	private static QueryBuilder getNestedQuery(String query) {
 
 		return QueryBuilders.nestedQuery(
-				Globals.PATH_TWO, matchQuery(query), ScoreMode.None);
+				Globals.PATH_ONE, matchQuery(query), ScoreMode.Avg);
 	}
 
+	/**
+	 * gör en match-query där träffarna visas först,
+	 * dock så rensar den inte bort resultat som inte matchar, de hamnar bara längst ned.
+	 * Den matchar mot årsredovisningens inmatningstext.
+	 * @param query String
+	 * @return QueryBuilder
+	 */
 	private static QueryBuilder matchQuery(String query) {
 		return QueryBuilders.matchQuery(Globals.MATCH_FIELD, query);
 	}
-	public Optional<SearchRequestBuilder> umea(String query) {
+
+	/**
+	 * Skapar en builder för queryt. Den anpassar så resultatet visar det som
+	 * kunden ville ha spefifikt. Den kör en nestlad query med namn.
+	 * @param query SearchQuery
+	 * @return Optional<SearchRequestBuilder>
+	 */
+	public Optional<SearchRequestBuilder> umea(SearchQuery query) {
 		// TODO: 2018-04-11	maxhit
-		SearchRequestBuilder builder = getBuilderWithMaxHits(1);
+		SearchRequestBuilder builder = getBuilderWithMaxHits(query.getMaxHits());
 		builder.setFetchSource(Globals.getUmeasearchresultfields(), new String[0]);
-			getNestedQueryWithInnerHit(query).ifPresent(builder::setQuery);
+			getNestedQueryWithName(query.getQuery()).ifPresent(builder::setQuery);
 		log.info(builder.toString());
 		return Optional.of(builder);
 	}
 
+	/**
+	 * Kör en builder med maxhit,
+	 * om story ska visas i resultatet,
+	 * vilken offset bestämd av queyObjektet som skickas in.
+	 * Används för salesInsight
+	 *
+	 * @param query SearchQuery
+	 * @return Optional<SearchRequestBuilder>
+	 */
 	public Optional<SearchRequestBuilder> getRequestBuilderByQuery(SearchQuery query) {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(query.getMaxHits());
 		builder.setFetchSource(Globals.getFIELDS(query.isIncludeStory()), new String[0]);
@@ -46,6 +74,13 @@ public class QueryBuilderUtils {
 		return Optional.of(builder);
 	}
 
+	/**
+	 * Första testet för umeå projektetet. Använder namedquery på en databas-struktur
+	 * som inte
+	 * stödjer en namequery
+	 * @param searchQuery SearchQuery
+	 * @return Optional<SearchRequestBuilder>
+	 */
 	public Optional<SearchRequestBuilder> test(SearchQuery searchQuery) {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(10);
 		builder.setFetchSource(Globals.getFIELDS(searchQuery.isIncludeStory()),
@@ -55,8 +90,12 @@ public class QueryBuilderUtils {
 		return Optional.of(builder);
 	}
 
+	/**
+	 * försöker testa namedquery API, fungerar ej för index 4.
+	 * @param query String
+	 * @return Optional<QueryBuilder>
+	 */
 	private Optional<QueryBuilder> parseQueryTest(String query) {
-
 		//hasparent type, query,score
 		BoolQueryBuilder mustQuery = QueryBuilders.boolQuery();
 		BoolQueryBuilder shouldQuery = QueryBuilders.boolQuery();
@@ -80,6 +119,13 @@ public class QueryBuilderUtils {
 		).queryName("outerBool")); */
 	}
 
+	/**
+	 * Använder en querystringquerybuilder som parsar queryn efter AND,OR,NOT.
+	 * Den kör med Or operatorn.
+	 * Används i salesInsight
+	 * @param query String
+	 * @return Optional<QueryStringQueryBuilder>
+	 */
 	private Optional<QueryStringQueryBuilder> parseQuery(String query) {
 		if (query.equals("")) {
 			return Optional.empty();
@@ -103,23 +149,28 @@ public class QueryBuilderUtils {
 		return client.prepareSearch().setFrom(from).setSize(size).setIndices(Globals
 				.INDEX);
 	}
-	private Optional<QueryBuilder> getNestedQueryWithInnerHit(String query) {
-		// TODO: 2018-04-16 flera queries, vilken fick träff. namcedquery
-		NestedQueryBuilder nestedQueryBuilder =	QueryBuilders.nestedQuery(
-				Globals.PATH_ONE, getMultiNestedQuery(query), ScoreMode.Avg);
-		nestedQueryBuilder.innerHit(new InnerHitBuilder(), true);
-		nestedQueryBuilder.innerHit()
-				.addDocValueField("report.year")
-				.addDocValueField("report.from_month");
+
+	/**
+	 * namnger nested query med query sökningen. Dvs nyckelordet.
+	 * @param query String
+	 * @return Optional<QueryBuilder>
+	 */
+	private Optional<QueryBuilder> getNestedQueryWithName(String query) {
+		QueryBuilder nestedQueryBuilder =	getNestedQuery(query);
+//		nestedQueryBuilder.innerHit(new InnerHitBuilder(), true);
+//		nestedQueryBuilder.innerHit()
+//				.addDocValueField("report.year")
+//				.addDocValueField("report.from_month");
 		nestedQueryBuilder.queryName(query);
 		return Optional.of(nestedQueryBuilder);
 	}
 
-	public static QueryBuilder getNestedQuery(String query) {
-		return	 QueryBuilders.nestedQuery(
-				Globals.PATH_ONE, getMultiNestedQuery(query), ScoreMode.Avg);
-	}
 
+	/**
+	 * metoden parsar queryt manuellt, användes innan querystringquerybuilder fungerade.
+	 * @param rawInputString String
+	 * @return Optional<BoolQueryBuilder>
+	 */
 	public static Optional<BoolQueryBuilder> getRootQuery(String rawInputString) {
 		if (rawInputString.equals(""))
 			return Optional.empty();

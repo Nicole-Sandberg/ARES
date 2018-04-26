@@ -14,6 +14,7 @@ public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
 		this.cells = cells;
 	}
 
+
 	public String getCsvLine() {
 		StringJoiner joiner = new StringJoiner(",")
 				.add(name).add(String.valueOf(hits));

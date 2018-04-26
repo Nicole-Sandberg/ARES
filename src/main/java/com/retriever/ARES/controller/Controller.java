@@ -31,9 +31,9 @@ public class Controller {
 	/**
 	 * metod som testar named queries i en nestad query. Ej fått detta att fungera.
 	 * fungerar med onestlande boolquerys
-	 * @param account
-	 * @param query
-	 * @return
+	 * @param account Account
+	 * @param query SearchQuery
+	 * @return ResponseEntity<SearchResponseARES>
 	 */
 //----------------------test Named queries---------------------------
 	@RequestMapping("testName")
@@ -41,18 +41,16 @@ public class Controller {
 														@RequestBody SearchQuery query) {
 		SearchResponseARES result = searchService.test(query)
 				.map(response -> new SearchResponseARES(query.getOffset(),
-						Arrays.asList(response)))
+                        Collections.singletonList(response)))
 				.orElse(new SearchResponseARES());
-		ResponseEntity<SearchResponseARES> result2 =
-				new ResponseEntity<>(result, HttpStatus.OK);
-		return result2;
+        return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	/**
 	 * metod som skriver ut CSV-fil till kund. sorterad efter flest träffar per sök.
 	 * sökmetod ej klar kolla umeå
-	 * @param account
-	 * @param response
+	 * @param account Account
+	 * @param response HttpServletResponse
 	 */
 //--------------------------test Umeå CSV---------------------------
 	@RequestMapping("test")
@@ -96,41 +94,39 @@ public class Controller {
 	}
 
 	/**
-	 * använder elasticsearch querystringquerybuilder som parsar query efter AND,OR,NOT
-	 * @param account
-	 * @param query
+	 * använder elasticsearch query string querybuilder som parsar query efter AND,OR,NOT
+	 * @param account Account
+	 * @param query SearchQuery
 	 * ex:
 	 * "query" : "betydande tvivel",
 	"documentCreatedAfter" : "2018-03-03T09:06:04",
 	"maxHits" : 10,
 	"includeStory" : false,
 	"offset" : 0
-	 * @return
+	 * @return ResponseEntity<SearchResponseARES>
 	 */
 //-------------- QueryStringQueryBuilder----------------------------
 	@RequestMapping("search")
 	public ResponseEntity<SearchResponseARES> search(@CurrentAccount Account account,
 													@RequestBody SearchQuery query) {
 		SearchResponseARES response = getData(query);
-		ResponseEntity<SearchResponseARES> result =
-				new ResponseEntity<>(response, HttpStatus.OK);
-		return result;
+        return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	private SearchResponseARES getData(SearchQuery query) {
-		SearchResponseARES result = searchService.search(query)
-				.map(response -> new SearchResponseARES(query.getOffset(),
-						Arrays.asList(response)))
-				.orElse(new SearchResponseARES());
-		return result;
+        return searchService.search(query)
+                .map(response -> new SearchResponseARES(query.getOffset(),
+						Collections.singletonList(response)))
+                .orElse(new SearchResponseARES());
 
 	}
 
 	/**
 	 * metod som söker med multi nestlade querys och ger innerhits(report år och månad)
-	 * @param account
-	 * @param query
-	 * @return
+	 * obs måste vara method post när man skickar in en lista
+	 * @param account Account
+	 * @param query List<SearchQuery>
+	 * @return ResponseEntity<SearchResponseARES>
 	 */
 
 	//-------------------------------TEST 2 umeå--------------------------------------
@@ -138,21 +134,17 @@ public class Controller {
 	public ResponseEntity<SearchResponseARES> searchUmea(
 			@CurrentAccount Account account, @RequestBody List<SearchQuery> query) {
 		SearchResponseARES response = getDataUmea(query.get(0));
-		SearchResponseARES responseTwo = getDataUmea(query.get(1));
+//		SearchResponseARES responseTwo = getDataUmea(query.get(1));
 		Map<String, List<SearchResponseARES>> resultsMap = new HashMap<>();
-		resultsMap.put(String.valueOf(response.getResults()
-				.get(0).getMatchedQueries()), Collections.singletonList(response));
-		ResponseEntity<SearchResponseARES> result =
-				new ResponseEntity<>(response, HttpStatus.OK);
-		return result;
+		resultsMap.put(response.getResults().get(0).getCompanyName(), Collections.singletonList(response));
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	private SearchResponseARES getDataUmea(SearchQuery query) {
-		SearchResponseARES result = searchService.searchUmea(query.getQuery())
+		return searchService.searchUmea(query)
 				.map(response -> new SearchResponseARES(query.getOffset(),
-						Arrays.asList(response)))
+						Collections.singletonList(response)))
 				.orElse(new SearchResponseARES());
-		return result;
 
 	}
 

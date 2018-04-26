@@ -20,6 +20,12 @@ public class SearchResponseARES {
 	public SearchResponseARES() {
 	}
 
+	/**
+	 * Hämtar ut hur många totala träffar och hur många träffar som returnerades.
+	 * Samt hela resultatet formatterat i ResponseUtils
+	 * @param offset int
+	 * @param responses List<SearchResponse>
+	 */
 	public SearchResponseARES(int offset, List<SearchResponse> responses) {
 
 		this.totalHits = responses.isEmpty() ? 0 : responses.get(0).getHits()

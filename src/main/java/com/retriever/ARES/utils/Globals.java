@@ -3,54 +3,44 @@ package com.retriever.ARES.utils;
 
 import java.util.Arrays;
 
-public class Globals {
+ class Globals {
 	private Globals() {
 	}
 
-	public static final String INDEX = "annreport.se.v4";
-	public static final String TYPE = "retriever";
-	public static final String PATH_ONE = "report";
-	public static final String PATH_TWO = "report.pages";
-	public static final String MATCH_FIELD = "report.pages.story";
+	static final String INDEX = "annreport.se.v5";
+	static final String TYPE = "retriever";
+	static final String PATH_ONE = "pages";
+	// static final String PATH_TWO = "report.pages"; <-- för index 4
+	static final String MATCH_FIELD = "pages.story";
 
 	private static final String[] FIELDS = new String[] {
 			"ftgnamn",
 			"orgnr",
-			"report.year",
-			"report.from_month",
-			"report.length_in_month",
-			"report.pages.page"
+			"year",
+			"from_month",
+			"length_in_month",
+			"pages.page"
 	};
 	private static final String[] UMEASEARCHRESULTFIELDS = new String[]{
 			"ftgnamn",
 			"orgnr",
-			"report.year",
-			"report.from_month"
+			"year",
+			"from_month"
 	};
 	private static final String[] FIELDSANDSTORY = new String[] {
 			"ftgnamn",
 			"orgnr",
-			"report.year",
-			"report.from_month",
-			"report.length_in_month",
-			"report.pages.story",
-			"report.pages.page"
+			"year",
+			"from_month",
+			"length_in_month",
+			"pages.story",
+			"pages.page"
 	};
-	private static final String[]keys = new String[] {
-			"AND",
-			"OR",
-			"ANDNOT",
-			"("
-	};
-	public static String[] getFIELDS(boolean includeStory) {
+	static String[] getFIELDS(boolean includeStory) {
 		String[] fields	= includeStory ? FIELDSANDSTORY : FIELDS;
 		return Arrays.copyOf(fields, fields.length);
 	}
-	public static String[] getUmeasearchresultfields() {
+	static String[] getUmeasearchresultfields() {
 		return Arrays.copyOf(UMEASEARCHRESULTFIELDS, UMEASEARCHRESULTFIELDS.length);
-	}
-
-	public static String[] getKeys() {
-		return Arrays.copyOf(keys, keys.length);
 	}
 }

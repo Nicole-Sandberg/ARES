@@ -18,7 +18,10 @@ public class Company {
 	private String revenue;
 	private DocValueFormat.DateTime processingDate;
 	private String county;
-	private List<Report> reports;
+	private String year;
+	private String month;
+	private String date;
+	private List<Page> pages;
 
 
 
@@ -29,30 +32,32 @@ public class Company {
 			@JsonProperty("processingdate")
 							DocValueFormat.DateTime processingDate,
 			@JsonProperty("sate_lan") String county,
-			@JsonProperty("report") List<Report> reports
+			@JsonProperty("year") String year,
+			@JsonProperty("from_month") String month,
+			@JsonProperty("length_in_month") String date,
+			@JsonProperty("pages") List<Page> pages
 					) {
 		this.amountEmployee = amountEmployee;
 		this.revenue = revenue;
 		this.companyName = companyName;
 		this.orgnr = orgnr;
 		this.processingDate = processingDate;
-		this.reports = reports;
 		this.county = county;
+		this.year = year;
+		this.month = month;
+		this.date = date;
+		this.pages = pages;
 	}
 
 	public Company(List<InnerHitObject> hitObjects) {
 		this.innerHitsReport = hitObjects;
 	}
 
-//	public String getCounty() {
-//				return county;
-//		}
-
-		public void setCounty(String county) {
+	public void setCounty(String county) {
 				this.county = county;
 		}
 
-		public String getCompanyName() {
+	public String getCompanyName() {
 		return companyName;
 	}
 
@@ -68,58 +73,58 @@ public class Company {
 		this.orgnr = orgnr;
 	}
 
-//	public List<Report> getReports() {
-//		return reports;
-//	}
-
-	public void setReports(List<Report> reports) {
-		this.reports = reports;
-	}
-
-
 	public void addInnerHits(List<InnerHitObject> hitObjects) {
 		this.innerHitsReport = hitObjects;
 	}
 
-		public List<InnerHitObject> getInnerHitsReport() {
+	public List<InnerHitObject> getInnerHitsReport() {
 				return innerHitsReport;
 		}
+	public void setInnerHitsReport(List<InnerHitObject> innerHitsReport) {
+			this.innerHitsReport = innerHitsReport;
+	}
 
-		public void setInnerHitsReport(List<InnerHitObject> innerHitsReport) {
-				this.innerHitsReport = innerHitsReport;
-		}
+	public void setAmountEmployee(String amountEmployee) {
+			this.amountEmployee = amountEmployee;
+	}
 
-		public void setAmountEmployee(String amountEmployee) {
-				this.amountEmployee = amountEmployee;
-		}
-
-		public void setRevenue(String revenue) {
+	public void setRevenue(String revenue) {
 				this.revenue = revenue;
 		}
 
-		public void setProcessingDate(DocValueFormat.DateTime processingDate) {
-				this.processingDate = processingDate;
-		}
+	public void setProcessingDate(DocValueFormat.DateTime processingDate) {
+			this.processingDate = processingDate;
+	}
 
-//		public String getAmountEmployee() {
-//				return amountEmployee;
-//		}
-//
-//		public String getRevenue() {
-//				return revenue;
-//		}
+	public void setMatchedQueries(String[] matchedQueries) {
+		this.matchedQueries = Arrays.copyOf(matchedQueries, matchedQueries.length);
+	}
 
-//		public DocValueFormat.DateTime getProcessingDate() {
-//				return processingDate;
-//		}
+	public String[] getMatchedQueries() {
+			return Arrays.copyOf(matchedQueries, matchedQueries.length);
+	}
 
-		public void addNameOfHits(String[] matchedQueries) {
-			this.matchedQueries = Arrays.copyOf(matchedQueries, matchedQueries.length);
-		}
+	public void setYear(String year) {
+		this.year = year;
+	}
 
-		public String[] getMatchedQueries() {
-				return Arrays.copyOf(matchedQueries, matchedQueries.length);
-		}
+	public void setMonth(String month) {
+		this.month = month;
+	}
 
+	public void setDate(String date) {
+		this.date = date;
+	}
 
+	public void setPages(List<Page> pages) {
+		this.pages = pages;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public String getMonth() {
+		return month;
+	}
 }
