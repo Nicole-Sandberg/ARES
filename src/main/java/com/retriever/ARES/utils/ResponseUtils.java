@@ -1,6 +1,8 @@
 package com.retriever.ARES.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.retriever.ARES.models.ARESCsvOutput;
+import com.retriever.ARES.models.SearchResponseARES;
 import com.retriever.ARES.models.mapping.Company;
 import com.retriever.ARES.models.mapping.InnerHitObject;
 import org.elasticsearch.action.search.SearchResponse;
@@ -50,7 +52,7 @@ public final class ResponseUtils {
 				searchResult.addInnerHits(getAndMapInnerHits(hit));
 			}
 			if (hit.getMatchedQueries().length > 0) {
-				searchResult.setMatchedQueries(hit.getMatchedQueries());
+				searchResult.setMatchedQueries(hit.getMatchedQueries()[0]);
 			}
 			return searchResult;
 		} catch (IOException e) {
@@ -78,5 +80,42 @@ public final class ResponseUtils {
 				return null;
 			}
 		}).filter(Objects::nonNull).collect(Collectors.toList());
+	}
+
+	/**
+	 * parsar responses från queries så att
+	 * samma rapport inte nämns flera ggr,
+	 * utan att List av cells lägger till träffen istället.
+	 * @param responses List<SearchResponsesARES>
+	 * @return List<ARESCsvOutput>
+	 */
+	public static List<ARESCsvOutput> parseResultsForUmea(
+			List<SearchResponseARES> responses) {
+		
+		Map<String, ARESCsvOutput> correctMapping = new HashMap<>();
+
+		for (SearchResponseARES response : responses) {
+			for (int i = 0; i < response.getReturnedHits(); i++) {
+				String uniqueID = String.format("%s%s%s",
+						response.getResults().get(i).getOrgnr() + " ",
+						response.getResults().get(i).getMonth() + " ",
+						response.getResults().get(i).getYear());
+				if (correctMapping.containsKey(uniqueID)) {
+					correctMapping.get(uniqueID).setCells(response
+							.getResults().get(i).getMatchedQueries());
+					correctMapping.get(uniqueID).setHits(
+							correctMapping.get(uniqueID).getCells().size());
+					break;
+				} else {
+					correctMapping.put(uniqueID, new ARESCsvOutput(
+							response.getResults().get(i).getOrgnr(),
+							response.getResults().get(i).getMonth() +
+									response.getResults().get(i).getYear(),
+							response.getResults().get(i)
+									.getMatchedQueries()));
+				}
+			}
+		}
+		return new ArrayList<>(correctMapping.values());
 	}
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.elasticsearch.search.DocValueFormat;
 
-import java.util.Arrays;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -13,7 +12,7 @@ public class Company {
 	private String companyName;
 	private String orgnr;
 	private List<InnerHitObject> innerHitsReport;
-	private String[] matchedQueries;
+	private String matchedQueries;
 	private String amountEmployee;
 	private String revenue;
 	private DocValueFormat.DateTime processingDate;
@@ -96,12 +95,12 @@ public class Company {
 			this.processingDate = processingDate;
 	}
 
-	public void setMatchedQueries(String[] matchedQueries) {
-		this.matchedQueries = Arrays.copyOf(matchedQueries, matchedQueries.length);
+	public void setMatchedQueries(String matchedQueries) {
+		this.matchedQueries = matchedQueries;
 	}
 
-	public String[] getMatchedQueries() {
-			return Arrays.copyOf(matchedQueries, matchedQueries.length);
+	public String getMatchedQueries() {
+			return matchedQueries;
 	}
 
 	public void setYear(String year) {

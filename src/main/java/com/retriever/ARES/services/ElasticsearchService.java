@@ -1,7 +1,10 @@
 package com.retriever.ARES.services;
 
+import com.retriever.ARES.models.ARESCsvOutput;
 import com.retriever.ARES.models.SearchQuery;
+import com.retriever.ARES.models.SearchResponseARES;
 import com.retriever.ARES.utils.QueryBuilderUtils;
+import com.retriever.ARES.utils.ResponseUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +16,7 @@ import org.elasticsearch.action.ActionResponse;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,6 +32,7 @@ public class ElasticsearchService {
 
 	@Autowired
 	QueryBuilderUtils queryBuilder;
+
 
 	public Optional<SearchResponse> search(SearchQuery query) {
 		//	 query.getQueryObject().flatMap(this::actionGet);
@@ -59,4 +64,8 @@ public class ElasticsearchService {
 		public Optional<SearchResponse> searchUmea(SearchQuery query) {
 		return queryBuilder.umea(query).flatMap(this::actionGet);
 		}
+
+		public List<ARESCsvOutput> parseResults(List<SearchResponseARES> response) {
+
+			return ResponseUtils.parseResultsForUmea(response);		}
 }

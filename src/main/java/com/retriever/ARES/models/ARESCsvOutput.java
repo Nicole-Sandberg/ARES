@@ -1,23 +1,32 @@
 package com.retriever.ARES.models;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
 public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
-	private final String name;
-	private final int hits;
-	private final List<String> cells;
+	private	String name;
+	private	int hits = 1;
+	private List<String> cells = new ArrayList<>();
+	private String monthAndYear;
+	
+	public ARESCsvOutput() {
+			
+		}
 
-	public ARESCsvOutput(String name, int hits, List<String> cells) {
+	public ARESCsvOutput(String name, String monthAndYear, String cell) {
 		this.name = name;
-		this.hits = hits;
-		this.cells = cells;
+		this.monthAndYear = monthAndYear;
+		this.cells.add(cell);
 	}
 
 
 	public String getCsvLine() {
 		StringJoiner joiner = new StringJoiner(",")
-				.add(name).add(String.valueOf(hits));
+				.add(name)
+				.add(monthAndYear)
+				.add(String.valueOf(hits));
 		for (String cell : cells) {
 			joiner.add(cell);
 		}
@@ -43,4 +52,37 @@ public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
 	public boolean equals(Object obj) {
 		return super.equals(obj);
 	}
+
+	public String getName() {
+		return name;
+	}
+	public void setHits(int hits) {
+			this.hits = hits;
+		}
+
+	public int getHits() {
+		return hits;
+	}
+
+	public List<String> getCells() {
+		return cells;
+	}
+
+	public String getMonthAndYear() {
+		return monthAndYear;
+	}
+
+	public void setMonthAndYear(String monthAndYear) {
+		this.monthAndYear = monthAndYear;
+	}
+	public void setCells(String cell) {
+		this.cells.add(cell);
+	}
+	public String toString() {
+			return String.format("%s (%d)", name, cells.size());
+		}
+
+		public void setName(String name) {
+				this.name = name;
+		}
 }

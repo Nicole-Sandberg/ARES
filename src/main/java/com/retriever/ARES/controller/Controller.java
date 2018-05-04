@@ -58,26 +58,7 @@ public class Controller {
 	@RequestMapping("test")
 	public void getExcel(@CurrentAccount Account account,
 						HttpServletResponse response, List<ARESCsvOutput> results) {
-		String header = "företag,antal träffar,abc,verksamhetbla,xyz,söksträng2\n";
-
-
-
-//
-//				List<ARESCsvOutput> results = new ArrayList<>();
-//		results.add(new ARESCsvOutput("5560125793",	4,
-//								"201804", queries));
-//		results.add(new ARESCsvOutput("5560125790",	3,
-//								"201804", Arrays.asList(
-//				"X", "X", "O", "X")));
-//		results.add(new ARESCsvOutput("5560125799",	1,
-//								"201804", Arrays.asList(
-//				"X", "X", "O", "X")));
-//		results.add(new ARESCsvOutput("5560125791",	1,
-//								"201804", Arrays.asList(
-//				"O", "O", "O", "X")));
-//		results.add(new ARESCsvOutput("5560125792",	2,
-//								"201804", Arrays.asList(
-//				"X", "O", "O", "X")));
+		String header = "företag,antal träffar,år och månad,träff 1,träff 2,träff 3\n";
 
 		Collections.sort(results);
 		try {
@@ -86,9 +67,6 @@ public class Controller {
 					"attachment;filename =arsrapport-retriever.csv");
 			OutputStream out = response.getOutputStream();
 			out.write(header.getBytes(Charset.forName("UTF-8")));
-//			final ARESCsvOutput object = new ARESCsvOutput(
-//					"Object", 4, "201804", Arrays.asList("X", "X", "X", "X"));
-//			results.add(object);
 			results.forEach(company -> {
 				try {
 					out.write(company.getCsvLine().getBytes(Charset.forName("UTF-8")));
