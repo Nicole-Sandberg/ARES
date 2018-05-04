@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class Controller {
@@ -41,9 +42,9 @@ public class Controller {
 														@RequestBody SearchQuery query) {
 		SearchResponseARES result = searchService.test(query)
 				.map(response -> new SearchResponseARES(query.getOffset(),
-                        Collections.singletonList(response)))
+												Collections.singletonList(response)))
 				.orElse(new SearchResponseARES());
-        return new ResponseEntity<>(result, HttpStatus.OK);
+				return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 
 	/**
@@ -51,23 +52,32 @@ public class Controller {
 	 * sökmetod ej klar kolla umeå
 	 * @param account Account
 	 * @param response HttpServletResponse
+	 * @param results List<ARESCsvOutput>
 	 */
 //--------------------------test Umeå CSV---------------------------
 	@RequestMapping("test")
-	public void getExcel(@CurrentAccount Account account, HttpServletResponse response) {
+	public void getExcel(@CurrentAccount Account account,
+						HttpServletResponse response, List<ARESCsvOutput> results) {
 		String header = "företag,antal träffar,abc,verksamhetbla,xyz,söksträng2\n";
 
-		List<ARESCsvOutput> results = new ArrayList<>();
-		results.add(new ARESCsvOutput("5560125793",	4, Arrays.asList(
-				"X", "X", "X", "X")));
-		results.add(new ARESCsvOutput("5560125790",	3, Arrays.asList(
-				"X", "X", "O", "X")));
-		results.add(new ARESCsvOutput("5560125799",	1, Arrays.asList(
-				"X", "X", "O", "X")));
-		results.add(new ARESCsvOutput("5560125791",	1, Arrays.asList(
-				"O", "O", "O", "X")));
-		results.add(new ARESCsvOutput("5560125792",	2, Arrays.asList(
-				"X", "O", "O", "X")));
+
+
+//
+//				List<ARESCsvOutput> results = new ArrayList<>();
+//		results.add(new ARESCsvOutput("5560125793",	4,
+//								"201804", queries));
+//		results.add(new ARESCsvOutput("5560125790",	3,
+//								"201804", Arrays.asList(
+//				"X", "X", "O", "X")));
+//		results.add(new ARESCsvOutput("5560125799",	1,
+//								"201804", Arrays.asList(
+//				"X", "X", "O", "X")));
+//		results.add(new ARESCsvOutput("5560125791",	1,
+//								"201804", Arrays.asList(
+//				"O", "O", "O", "X")));
+//		results.add(new ARESCsvOutput("5560125792",	2,
+//								"201804", Arrays.asList(
+//				"X", "O", "O", "X")));
 
 		Collections.sort(results);
 		try {
@@ -76,9 +86,9 @@ public class Controller {
 					"attachment;filename =arsrapport-retriever.csv");
 			OutputStream out = response.getOutputStream();
 			out.write(header.getBytes(Charset.forName("UTF-8")));
-			final ARESCsvOutput object = new ARESCsvOutput(
-					"Object", 4, Arrays.asList("X", "X", "X", "X"));
-			results.add(object);
+//			final ARESCsvOutput object = new ARESCsvOutput(
+//					"Object", 4, "201804", Arrays.asList("X", "X", "X", "X"));
+//			results.add(object);
 			results.forEach(company -> {
 				try {
 					out.write(company.getCsvLine().getBytes(Charset.forName("UTF-8")));
@@ -110,14 +120,14 @@ public class Controller {
 	public ResponseEntity<SearchResponseARES> search(@CurrentAccount Account account,
 													@RequestBody SearchQuery query) {
 		SearchResponseARES response = getData(query);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+				return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	private SearchResponseARES getData(SearchQuery query) {
-        return searchService.search(query)
-                .map(response -> new SearchResponseARES(query.getOffset(),
+				return searchService.search(query)
+								.map(response -> new SearchResponseARES(query.getOffset(),
 						Collections.singletonList(response)))
-                .orElse(new SearchResponseARES());
+								.orElse(new SearchResponseARES());
 
 	}
 
@@ -126,18 +136,17 @@ public class Controller {
 	 * obs måste vara method post när man skickar in en lista
 	 * @param account Account
 	 * @param query List<SearchQuery>
-	 * @return ResponseEntity<SearchResponseARES>
 	 */
 
 	//-------------------------------TEST 2 umeå--------------------------------------
 	@RequestMapping(value = "searchUmea", method = RequestMethod.POST)
-	public ResponseEntity<SearchResponseARES> searchUmea(
-			@CurrentAccount Account account, @RequestBody List<SearchQuery> query) {
-		SearchResponseARES response = getDataUmea(query.get(0));
-//		SearchResponseARES responseTwo = getDataUmea(query.get(1));
-		Map<String, List<SearchResponseARES>> resultsMap = new HashMap<>();
-		resultsMap.put(response.getResults().get(0).getCompanyName(), Collections.singletonList(response));
-		return new ResponseEntity<>(response, HttpStatus.OK);
+	public void searchUmea(
+			@CurrentAccount Account account, @RequestBody List<SearchQuery> query,
+			HttpServletResponse httpServletResponse) {
+				List<SearchResponseARES> responses = query.stream()
+						.map(this::getDataUmea).collect(Collectors.toList());
+				List<ARESCsvOutput> results = searchService.parseResults(responses);
+		getExcel(account, httpServletResponse, results);
 	}
 
 	private SearchResponseARES getDataUmea(SearchQuery query) {
