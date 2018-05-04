@@ -7,7 +7,7 @@ public class Globals {
 	private Globals() {
 	}
 
-	public static final String INDEX = "annreport.se.v4";
+	public static final String INDEX = "annreport.se.v5";
 	public static final String TYPE = "retriever";
 	public static final String PATH_ONE = "report";
 	public static final String PATH_TWO = "report.pages";

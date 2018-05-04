@@ -8,7 +8,10 @@ import org.elasticsearch.index.query.*;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 @Component
@@ -41,7 +44,7 @@ public class QueryBuilderUtils {
 		SearchRequestBuilder builder = getBuilderWithMaxHits(query.getMaxHits());
 		builder.setFetchSource(Globals.getFIELDS(query.isIncludeStory()), new String[0]);
 		builder.setFrom(query.getOffset());
-		parseQuery(query.getQuery()).ifPresent(builder::setQuery);
+		parseQuery(query).ifPresent(builder::setQuery);
 		log.info(builder.toString());
 		return Optional.of(builder);
 	}
@@ -71,30 +74,32 @@ public class QueryBuilderUtils {
 		);
 		log.debug(mustQuery.toString());
 		return Optional.of(mustQuery);
-		/*return QueryBuilders.boolQuery().must(
-				QueryBuilders.hasParentQuery("report",
-						QueryBuilders.boolQuery()
-								.should(QueryBuilders.termQuery("year",
-								"2018").queryName("term")).
-								queryName("innerBool")).queryName("parent")
-		).queryName("outerBool")); */
 	}
 
-	private Optional<QueryStringQueryBuilder> parseQuery(String query) {
-		if (query.equals("")) {
-			return Optional.empty();
-		}
+	private Optional<QueryBuilder> parseQuery(SearchQuery query) {
+
+		BoolQueryBuilder bool = QueryBuilders.boolQuery();
+
+		dateField(query.getDocumentCreatedAfter()).ifPresent(bool::must);
+		queryString(query.getQuery()).ifPresent(bool::must);
+		return bool.hasClauses() ? Optional.of(bool) : Optional.empty();
+	}
+
+	private Optional<QueryBuilder> dateField(String dateTime) {
+		if (Objects.isNull(dateTime)) return Optional.empty();
+		return Optional.of(QueryBuilders.rangeQuery(Field.DATE).gt(dateTime));
+	}
+
+	private Optional<QueryBuilder> queryString(String query) {
+		if (query.equals("")) return Optional.empty();
+
 		QueryStringQueryBuilder queryBuilder = QueryBuilders.queryStringQuery(query);
 		queryBuilder.lenient(true);
 		queryBuilder.defaultOperator(Operator.OR);
 		queryBuilder.minimumShouldMatch(String.valueOf(1));
-
-		//queryBuilder.field("report.pages.story");
-		//  då går det ej att söka på orgnamn eller nr.
-
-
 		return Optional.of(queryBuilder);
 	}
+
 	private SearchRequestBuilder getBuilderWithMaxHits(int maxHits) {
 		return getBuilder(0, maxHits);
 	}

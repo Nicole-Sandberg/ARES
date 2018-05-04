@@ -118,7 +118,9 @@ public class Company {
 		}
 
 		public String[] getMatchedQueries() {
-				return Arrays.copyOf(matchedQueries, matchedQueries.length);
+				return matchedQueries != null ?
+						Arrays.copyOf(matchedQueries, matchedQueries.length) :
+						new String[]{};
 		}
 
 

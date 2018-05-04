@@ -73,7 +73,7 @@
 		<module name="TypecastParenPad" />
 		<module name="WhitespaceAfter" />
 		<module name="WhitespaceAround" />
-		 <!-- Gives weird results when using lambdas
+		 <!-- Gives weird companies when using lambdas
 		<module name="Indentation"/>
 		-->
 		 
