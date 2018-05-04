@@ -81,7 +81,6 @@ public final class ResponseUtils {
 			}
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 	}
-
 	/**
 	 * parsar responses från queries så att
 	 * samma rapport inte nämns flera ggr,
@@ -98,8 +97,8 @@ public final class ResponseUtils {
 			for (int i = 0; i < response.getReturnedHits(); i++) {
 				String uniqueID = String.format("%s%s%s",
 						response.getResults().get(i).getOrgnr() + " ",
-						response.getResults().get(i).getMonth() + " ",
-						response.getResults().get(i).getYear());
+						response.getResults().get(i).getYear() + " ",
+						response.getResults().get(i).getMonth());
 				if (correctMapping.containsKey(uniqueID)) {
 					correctMapping.get(uniqueID).setCells(response
 							.getResults().get(i).getMatchedQueries());
@@ -109,8 +108,8 @@ public final class ResponseUtils {
 				} else {
 					correctMapping.put(uniqueID, new ARESCsvOutput(
 							response.getResults().get(i).getOrgnr(),
-							response.getResults().get(i).getMonth() +
-									response.getResults().get(i).getYear(),
+							response.getResults().get(i).getYear() +
+									response.getResults().get(i).getMonth(),
 							response.getResults().get(i)
 									.getMatchedQueries()));
 				}

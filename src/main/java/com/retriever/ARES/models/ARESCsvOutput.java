@@ -9,15 +9,15 @@ public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
 	private	String name;
 	private	int hits = 1;
 	private List<String> cells = new ArrayList<>();
-	private String monthAndYear;
+	private String yearAndMonth;
 	
 	public ARESCsvOutput() {
 			
 		}
 
-	public ARESCsvOutput(String name, String monthAndYear, String cell) {
+	public ARESCsvOutput(String name, String yearAndMonth, String cell) {
 		this.name = name;
-		this.monthAndYear = monthAndYear;
+		this.yearAndMonth = yearAndMonth;
 		this.cells.add(cell);
 	}
 
@@ -25,7 +25,7 @@ public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
 	public String getCsvLine() {
 		StringJoiner joiner = new StringJoiner(",")
 				.add(name)
-				.add(monthAndYear)
+				.add(yearAndMonth)
 				.add(String.valueOf(hits));
 		for (String cell : cells) {
 			joiner.add(cell);
@@ -68,12 +68,12 @@ public class ARESCsvOutput implements Comparable<ARESCsvOutput> {
 		return cells;
 	}
 
-	public String getMonthAndYear() {
-		return monthAndYear;
+	public String getYearAndMonth() {
+		return yearAndMonth;
 	}
 
-	public void setMonthAndYear(String monthAndYear) {
-		this.monthAndYear = monthAndYear;
+	public void setYearAndMonth(String yearAndMonth) {
+		this.yearAndMonth = yearAndMonth;
 	}
 	public void setCells(String cell) {
 		this.cells.add(cell);
