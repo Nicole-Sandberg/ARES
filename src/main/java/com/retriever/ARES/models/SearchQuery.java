@@ -1,7 +1,5 @@
 package com.retriever.ARES.models;
 
-import java.time.LocalDateTime;
-
 public class SearchQuery {
 	private boolean includeStory = false;
 	private String query;
