@@ -1,29 +1,27 @@
 package com.retriever.ARES.models;
 
-import java.time.LocalDateTime;
-
 public class SearchQuery {
-		private boolean includeStory = false;
-		private String query;
-		private int maxHits;
-		private int offset;
-		private	LocalDateTime documentCreatedAfter;
+	private boolean includeStory = false;
+	private String query;
+	private int maxHits;
+	private int offset;
+	private	String documentCreatedAfter;
 
-		SearchQuery() { }
+	SearchQuery() { }
 
-		public int getOffset() {
-				return offset;
-		}
+	public int getOffset() {
+		return offset;
+	}
 
-		public void setOffset(int offset) {
-				this.offset = offset;
-		}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
 
-		public LocalDateTime getDocumentCreatedAfter() {
+	public String getDocumentCreatedAfter() {
 		return documentCreatedAfter;
 	}
 
-	public void setDocumentCreatedAfter(LocalDateTime documentCreatedAfter) {
+	public void setDocumentCreatedAfter(String documentCreatedAfter) {
 		this.documentCreatedAfter = documentCreatedAfter;
 	}
 
