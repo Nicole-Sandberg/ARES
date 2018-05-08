@@ -8,7 +8,7 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Company {
-	
+
 	private String companyName;
 	private String orgnr;
 	private List<InnerHitObject> innerHitsReport;
