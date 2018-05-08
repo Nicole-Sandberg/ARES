@@ -55,7 +55,7 @@ public class Controller {
 	 * @param results List<ARESCsvOutput>
 	 */
 //--------------------------test Umeå CSV---------------------------
-	@RequestMapping("test")
+	@RequestMapping("getExcel")
 	public void getExcel(@CurrentAccount Account account,
 						HttpServletResponse response, List<ARESCsvOutput> results) {
 		String header = "företag,antal träffar,år och månad,träff 1,träff 2,träff 3\n";

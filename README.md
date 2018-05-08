@@ -1,6 +1,5 @@
 # ARES
-Project description here.
+Service that search through swedish årsredovisningar that has been ocr-scanned.
 
 ---
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+The project use Spring and Elasticsearch. It uses QueryStringQueryBuilder for SalesInsight to parse input after "and", "or" and "not". It manualy search for a costumer that wants a excel-file with the report that matched the customers keywords, order by amout of hits.
