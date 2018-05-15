@@ -29,27 +29,10 @@ public class Controller {
 	@Autowired
 	ElasticsearchService searchService;
 
-	/**
-	 * metod som testar named queries i en nestad query. Ej fått detta att fungera.
-	 * fungerar med onestlande boolquerys
-	 * @param account Account
-	 * @param query SearchQuery
-	 * @return ResponseEntity<SearchResponseARES>
-	 */
-//----------------------test Named queries---------------------------
-	@RequestMapping("testName")
-	public ResponseEntity<SearchResponseARES> testName(@CurrentAccount Account account,
-														@RequestBody SearchQuery query) {
-		SearchResponseARES result = searchService.test(query)
-				.map(response -> new SearchResponseARES(query.getOffset(),
-												Collections.singletonList(response)))
-				.orElse(new SearchResponseARES());
-				return new ResponseEntity<>(result, HttpStatus.OK);
-	}
 
 	/**
 	 * metod som skriver ut CSV-fil till kund. sorterad efter flest träffar per sök.
-	 * sökmetod ej klar kolla umeå
+	 * sök genom test 2 searchUMEA
 	 * @param account Account
 	 * @param response HttpServletResponse
 	 * @param results List<ARESCsvOutput>
@@ -110,8 +93,7 @@ public class Controller {
 	}
 
 	/**
-	 * metod som söker med multi nestlade querys och ger innerhits(report år och månad)
-	 * obs måste vara method post när man skickar in en lista
+	 * metod som söker med multi nestlade querys
 	 * @param account Account
 	 * @param query List<SearchQuery>
 	 */
