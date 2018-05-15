@@ -58,7 +58,7 @@ public class Controller {
 	@RequestMapping("getExcel")
 	public void getExcel(@CurrentAccount Account account,
 						HttpServletResponse response, List<ARESCsvOutput> results) {
-		String header = "företag,antal träffar,år och månad,träff 1,träff 2,träff 3\n";
+		String header = "Företag,År och månad,Antal träffar,Träff 1,Träff 2,Träff 3\n";
 
 		Collections.sort(results);
 		try {

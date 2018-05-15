@@ -2,8 +2,7 @@ package com.retriever.ARES.utils;
 
 
 import java.util.Arrays;
-
-public class Globals {
+class Globals {
 	private Globals() {
 	}
 
